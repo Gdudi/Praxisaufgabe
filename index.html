@@ -908,22 +908,27 @@ var M=(function(){
     return writePdf(pages.map(function(p){return p.c;}),PW.toFixed(2),PH.toFixed(2));
   }
 
-  /* Download-Fähigkeit */
+  /* Speichern: in Claude über die Download-Fähigkeit, sonst als normaler Browser-Download */
   var downloads=null,pdfBtn=$('pdfBtn'),busy=false;
-  if(window.claude&&window.claude.use){
-    window.claude.use('downloads').then(function(d){
-      downloads=d;
-      if(!d){pdfBtn.disabled=true;pdfBtn.title='Speichern ist in dieser Ansicht nicht verfügbar.';}
-    }).catch(function(){pdfBtn.disabled=true;});
+  var dlReady=(window.claude&&window.claude.use)
+    ?window.claude.use('downloads').then(function(d){downloads=d;}).catch(function(){downloads=null;})
+    :Promise.resolve();
+  function browserSave(blob,fname){
+    var url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=fname;a.rel='noopener';a.style.display='none';
+    document.body.appendChild(a);a.click();
+    setTimeout(function(){a.remove();URL.revokeObjectURL(url);},60000);
   }
   pdfBtn.addEventListener('click',async function(){
     if(busy)return;
-    if(!downloads){toast('Speichern ist in dieser Ansicht nicht verfügbar.');return;}
     busy=true;var old=pdfBtn.textContent;pdfBtn.disabled=true;pdfBtn.textContent='PDF wird erstellt …';
     try{
+      await dlReady;
       var blob=await makePdf();
       var nm=val('name').replace(/[^\wäöüÄÖÜß-]+/g,'-').replace(/^-+|-+$/g,'');
-      await downloads.save({filename:'Weisse-Zwerge-Arbeitsblatt'+(nm?'-'+nm:'')+'.pdf',data:blob});
+      var fname='Weisse-Zwerge-Arbeitsblatt'+(nm?'-'+nm:'')+'.pdf';
+      if(downloads)await downloads.save({filename:fname,data:blob});
+      else browserSave(blob,fname);
       toast('PDF gespeichert.');
     }catch(e){
       var code=e&&e.code;
@@ -931,7 +936,7 @@ var M=(function(){
       else if(code==='rate_limited')toast('Bitte einen Moment warten und noch einmal tippen.');
       else toast('Das PDF konnte nicht gespeichert werden'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'.');
     }finally{
-      busy=false;pdfBtn.disabled=!downloads;pdfBtn.textContent=old;
+      busy=false;pdfBtn.disabled=false;pdfBtn.textContent=old;
     }
   });
 })();
