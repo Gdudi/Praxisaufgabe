@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Weiße Zwerge – Sirius B</title>
+<style>
+:root{
+  --bg:#f6f7fb;--card:#ffffff;--text:#1b2033;--muted:#5b6482;--accent:#3b5bdb;--accent-soft:#e7ecff;--line:#d9ddea;--field:#fbfcff;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0f1220;--card:#181c30;--text:#e8ebf8;--muted:#9aa3c7;--accent:#8aa2ff;--accent-soft:#252b4d;--line:#2d3358;--field:#12162a}
+}
+:root[data-theme="dark"]{--bg:#0f1220;--card:#181c30;--text:#e8ebf8;--muted:#9aa3c7;--accent:#8aa2ff;--accent-soft:#252b4d;--line:#2d3358;--field:#12162a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+header{margin-bottom:20px}
+.tag{display:inline-block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:99px}
+h1{font-size:2rem;margin:.4em 0 .1em}
+.sub{color:var(--muted);margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin:16px 0}
+h2{font-size:1.2rem;margin:0 0 10px}
+.task{color:var(--muted);margin:0}
+.formulas{display:grid;gap:10px}
+.formula{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--accent-soft);border-radius:10px;padding:10px 14px}
+.formula span:first-child{color:var(--muted);font-size:.92rem}
+.formula .eq{font-size:1.15rem;font-family:Georgia,"Times New Roman",serif;font-style:italic}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.1;margin:0 3px}
+.frac>span:first-child{border-bottom:1px solid currentColor;padding:0 4px 1px}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem;min-width:480px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+td:nth-child(2){font-family:Georgia,serif;font-style:italic}
+.q{margin:0 0 8px}
+.q b{color:var(--accent)}
+.answer{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:8px 0 14px}
+.answer label{font-weight:600;font-family:Georgia,serif;font-style:italic}
+input[type=text],textarea{background:var(--field);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font:inherit;font-size:1rem}
+input[type=text]{flex:1 1 140px;min-width:0}
+textarea{width:100%;min-height:120px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.unit{color:var(--muted)}
+.cmp{display:flex;align-items:center;flex-wrap:wrap;gap:8px;color:var(--muted);margin:4px 0 14px}
+.hint{font-size:.9rem;color:var(--muted);margin:0 0 8px}
+.src{font-size:.85rem;color:var(--muted)}
+.src p{margin:.3em 0}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+button{font:inherit;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:9px 16px;cursor:pointer}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.prog{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:0 0 8px}
+.prog .track{height:6px;background:var(--accent-soft);border-radius:9px;overflow:hidden}
+#pbar{height:100%;width:0;background:var(--accent);transition:width .3s}
+#ptxt{font-size:.8rem;color:var(--muted)}
+.cp{cursor:pointer}.cp:hover{background:var(--accent-soft)}
+details.way{margin:-6px 0 14px}details.way summary{cursor:pointer;color:var(--accent);font-size:.9rem}details.way textarea{min-height:80px;margin-top:6px}
+.fb{flex-basis:100%;font-size:.88rem}.fb.ok{color:#2b8a3e}.fb.mid{color:#e67700}.fb.bad{color:#c92a2a}
+.calc{display:flex;gap:8px;flex-wrap:wrap}.calc input{flex:1 1 220px}#co{flex-basis:100%;font-weight:600;min-height:1.4em}
+.wc{font-size:.8rem;color:var(--muted);text-align:right}
+svg.viz{width:100%;height:auto}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--text);color:var(--bg);padding:8px 16px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}.toast.on{opacity:1}
+@media print{.prog,.calc,.chk,.fb,.toast{display:none}}
+@media print{
+  :root{--bg:#fff;--card:#fff;--text:#000;--muted:#333;--line:#999;--accent-soft:#eee;--field:#fff}
+  .bar{display:none}.card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <span class="tag">Arbeitsblatt · Astronomie</span>
+  <h1>Weiße Zwerge</h1>
+  <p class="sub">Sirius B: Masse, Größe und Dichte</p>
+</header>
+<div class="prog"><div class="track"><div id="pbar"></div></div><span id="ptxt"></span></div>
+
+<section class="card">
+  <h2>Arbeitsauftrag</h2>
+  <p class="task">Rechnet mit den veröffentlichten Messwerten für Sirius B. Notiert Rechenweg und Einheiten. Rundet eure Ergebnisse sinnvoll.</p>
+</section>
+
+<section class="card">
+  <h2>Benötigte Formeln</h2>
+  <div class="formulas">
+    <div class="formula"><span>Volumen einer Kugel</span><span class="eq">V = <span class="frac"><span>4</span><span>3</span></span>π R<sup>3</sup></span></div>
+    <div class="formula"><span>Mittlere Dichte</span><span class="eq">ρ = <span class="frac"><span>M</span><span>V</span></span></span></div>
+    <div class="formula"><span>Oberflächengravitation</span><span class="eq">g = <span class="frac"><span>G M</span><span>R<sup>2</sup></span></span></span></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Beobachtungsdaten und Vergleichswerte</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>Größe</th><th>Symbol</th><th>Wert</th></tr></thead>
+    <tbody>
+      <tr><td>Masse von Sirius B</td><td>M</td><td>1,018 Sonnenmassen (M<sub>☉</sub>)</td></tr>
+      <tr><td>Radius von Sirius B</td><td>R</td><td>0,008098 Sonnenradien (R<sub>☉</sub>)</td></tr>
+      <tr><td>Sonnenmasse</td><td>M<sub>☉</sub></td><td>1,9885 × 10<sup>30</sup> kg</td></tr>
+      <tr><td>Sonnenradius</td><td>R<sub>☉</sub></td><td>6,957 × 10<sup>8</sup> m</td></tr>
+      <tr><td>Erdradius</td><td>R<sub>⊕</sub></td><td>6,371 × 10<sup>6</sup> m</td></tr>
+      <tr><td>Mittlere Erddichte</td><td>ρ<sub>⊕</sub></td><td>5,51 × 10<sup>3</sup> kg/m³</td></tr>
+      <tr><td>Erdbeschleunigung</td><td>g<sub>⊕</sub></td><td>9,81 m/s²</td></tr>
+      <tr><td>Gravitationskonstante</td><td>G</td><td>6,674 × 10<sup>−11</sup> m³ kg<sup>−1</sup> s<sup>−2</sup></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="card calc" style="display:block">
+  <h2>Taschenrechner</h2>
+  <p class="hint">Versteht Zehnerpotenzen, z. B. 1,018 × 1,9885 × 10^30 oder 4/3 × π × 2^3. Auch sqrt( ) geht. Tipp: Auf einen Wert in der Tabelle tippen kopiert ihn.</p>
+  <div class="calc"><input type="text" id="ci" placeholder="Rechnung eingeben …" aria-label="Taschenrechner" autocomplete="off"><div id="co"></div></div>
+</section>
+
+<section class="card">
+  <h2>1. Vorbetrachtungen und Berechnungen</h2>
+
+  <p class="q"><b>a)</b> Rechne die Masse von Sirius B in Kilogramm um.</p>
+  <div class="answer"><label for="a">Ergebnis: M =</label><input type="text" id="a" data-k="a" autocomplete="off"><span class="unit">kg</span></div>
+
+  <p class="q"><b>b)</b> Rechne den Radius von Sirius B in Meter um.</p>
+  <div class="answer"><label for="b">Ergebnis: R =</label><input type="text" id="b" data-k="b" autocomplete="off"><span class="unit">m</span></div>
+
+  <p class="q"><b>c)</b> Berechne das Volumen von Sirius B.</p>
+  <div class="answer"><label for="c">Ergebnis: V =</label><input type="text" id="c" data-k="c" autocomplete="off"><span class="unit">m³</span></div>
+
+  <p class="q"><b>d)</b> Berechne die mittlere Dichte von Sirius B.</p>
+  <div class="answer"><label for="d">Ergebnis: ρ =</label><input type="text" id="d" data-k="d" autocomplete="off"><span class="unit">kg/m³</span></div>
+  <div class="cmp"><span>Vergleich mit der Erde: ρ(Sirius B) / ρ<sub>⊕</sub> =</span><input type="text" id="d2" data-k="d2" aria-label="Dichteverhältnis" autocomplete="off"></div>
+
+  <p class="q"><b>e)</b> Berechne die Oberflächengravitation von Sirius B.</p>
+  <div class="answer"><label for="e">Ergebnis: g =</label><input type="text" id="e" data-k="e" autocomplete="off"><span class="unit">m/s²</span></div>
+  <div class="cmp"><span>Vergleich mit der Erde: g(Sirius B) / g<sub>⊕</sub> =</span><input type="text" id="e2" data-k="e2" aria-label="Gravitationsverhältnis" autocomplete="off"></div>
+</section>
+
+<section class="card">
+  <h2>Größenvergleich</h2>
+  <svg class="viz" viewBox="0 0 600 170" role="img" aria-label="Erde und Sirius B im gleichen Maßstab">
+    <circle cx="150" cy="75" r="63.7" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+    <circle cx="410" cy="75" r="56.3" style="fill:var(--accent);opacity:.85"/>
+    <text x="150" y="163" text-anchor="middle" style="fill:var(--text);font-size:16px">Erde</text>
+    <text x="410" y="163" text-anchor="middle" style="fill:var(--text);font-size:16px">Sirius B</text>
+  </svg>
+  <p class="hint">Erde und Sirius B im gleichen Maßstab. Die Sonne hätte hier einen Radius von rund 110 Erdradien und passt nicht ins Bild – und doch haben Sonne und Sirius B fast dieselbe Masse.</p>
+</section>
+
+<section class="card">
+  <h2>2. Auswertung</h2>
+  <p class="hint">Beantwortet die Fragen in ganzen Sätzen. Bezieht euch auf eure berechneten Werte.</p>
+
+  <p class="q"><b>a)</b> Vergleiche Sirius B mit der Sonne: Wie können beide fast dieselbe Masse haben, obwohl Sirius B nur ungefähr erdgroß ist? Was erklärt, dass Sirius B so viel dichter ist als die Erde?</p>
+  <textarea data-k="t1" aria-label="Antwort 2a"></textarea>
+
+  <p class="q" style="margin-top:18px"><b>b)</b> Trotz der hohen berechneten Dichte und Oberflächengravitation kollabiert Sirius B nicht weiter. Warum nicht?</p>
+  <textarea data-k="t2" aria-label="Antwort 2b"></textarea>
+
+  <p class="q" style="margin-top:18px"><b>c)</b> Was könnte sich ändern, wenn Sirius B in seinem Doppelsternsystem weiter Materie aufnimmt? Erkläre, warum die Chandrasekhar-Grenze dabei wichtig ist.</p>
+  <textarea data-k="t3" aria-label="Antwort 2c"></textarea>
+
+  <div class="bar">
+    <button type="button" id="copyall">Antworten kopieren</button>
+    <button type="button" id="print">Drucken / als PDF</button>
+    <button type="button" class="ghost" id="reset">Eingaben löschen</button>
+  </div>
+</section>
+
+<section class="card src">
+  <h2>Quellen zu den Messwerten</h2>
+  <p>Bond, H. E. et al. (2017), The Astrophysical Journal, 840, 70. DOI: 10.3847/1538-4357/aa6af8</p>
+  <p>Bédard, A. et al. (2019), Monthly Notices of the Royal Astronomical Society, 484, 2711–2725. DOI: 10.1093/mnras/sty3395</p>
+</section>
+</div>
+
+<script>
+(function(){
+  var fields=document.querySelectorAll('[data-k]');
+  var KEY='weisse-zwerge:';
+  function load(k){try{return localStorage.getItem(KEY+k)}catch(e){return null}}
+  function save(k,v){try{localStorage.setItem(KEY+k,v)}catch(e){}}
+  fields.forEach(function(f){
+    var v=load(f.dataset.k);
+    if(v!==null)f.value=v;
+    f.addEventListener('input',function(){save(f.dataset.k,f.value)});
+  });
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+  document.getElementById('reset').addEventListener('click',function(){
+    if(!confirm('Alle Eingaben wirklich löschen?'))return;window.dispatchEvent(new Event('wz-reset'));
+    fields.forEach(function(f){f.value='';try{localStorage.removeItem(KEY+f.dataset.k)}catch(e){}});
+  });
+})();
+</script>
+<script>
+(function(){
+var P='weisse-zwerge:';
+function ld(k){try{return localStorage.getItem(P+k)}catch(e){return null}}
+function sv(k,v){try{localStorage.setItem(P+k,v)}catch(e){}}
+function rm(k){try{localStorage.removeItem(P+k)}catch(e){}}
+var toast=document.createElement('div');toast.className='toast';document.body.appendChild(toast);var tt;
+function say(m){toast.textContent=m;toast.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove('on')},1800)}
+function copy(t){function fb(){var x=document.createElement('textarea');x.value=t;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}document.body.removeChild(x);say(ok?'Kopiert':'Kopieren nicht möglich')}
+if(navigator.clipboard&&navigator.clipboard.writeText){try{navigator.clipboard.writeText(t).then(function(){say('Kopiert')},fb)}catch(e){fb()}}else fb()}
+document.querySelectorAll('tbody td:nth-child(3)').forEach(function(td){td.classList.add('cp');td.title='Antippen zum Kopieren';td.addEventListener('click',function(){
+var s=td.innerHTML.replace(/<sup>(.*?)<\/sup>/g,'^$1').replace(/<[^>]+>/g,'').replace(/−/g,'-').trim();var m=s.match(/^[\d,]+(?:\s*×\s*10\^-?\d+)?/);copy(m?m[0]:s)})});
+var ids=['a','b','c','d','e'],keys=['a','b','c','d','d2','e','e2'];
+ids.forEach(function(id){var a=document.getElementById(id).closest('.answer');var n=a.nextElementSibling;var anc=n&&n.classList.contains('cmp')?n:a;
+var d=document.createElement('details');d.className='way';d.innerHTML='<summary>Rechenweg</summary><textarea data-k="w'+id+'" aria-label="Rechenweg '+id+')" placeholder="Formel, Einsetzen, Einheiten, Ergebnis …"></textarea>';anc.after(d)});
+var ws=document.querySelectorAll('textarea[data-k^="w"]');
+ws.forEach(function(t){var v=ld(t.dataset.k);if(v){t.value=v;t.closest('details').open=true}t.addEventListener('input',function(){sv(t.dataset.k,t.value)})});
+var H={t1:'Tipp: Beziehe dich auf deine Werte für ρ und g und vergleiche mit Sonne und Erde …',t2:'Tipp: Überlege, was der Schwerkraft entgegenwirkt und woher diese Kraft kommt …',t3:'Tipp: Was ändert sich an der Masse – und was bedeutet die Grenze für die Stabilität? …'};
+var ts=['t1','t2','t3'].map(function(k){var t=document.querySelector('[data-k="'+k+'"]');t.placeholder=H[k];var w=document.createElement('div');w.className='wc';t.after(w);function u(){var n=t.value.trim().split(/\s+/).filter(Boolean).length;w.textContent=n+(n===1?' Wort':' Wörter')}t.addEventListener('input',u);u();return{t:t,u:u}});
+var G=6.674e-11,M=1.018*1.9885e30,R=0.008098*6.957e8,V=4/3*Math.PI*Math.pow(R,3),rho=M/V,g=G*M/(R*R);
+var T={a:M,b:R,c:V,d:rho,d2:rho/5510,e:g,e2:g/9.81};
+var SUP={'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁻':'-'};
+function num(s){s=s.toLowerCase().replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]+/g,function(m){return '^'+m.split('').map(function(c){return SUP[c]}).join('')});
+s=s.replace(/[−–]/g,'-').replace(/\s+/g,'').replace(/,/g,'.').replace(/[×x·*]10\^?/,'e').replace(/e\^/,'e');
+var m=s.match(/^(-?\d*\.?\d+)(?:e(-?\d+))?$/);return m?parseFloat(m[1]+'e'+(m[2]||0)):NaN}
+keys.forEach(function(k){var i=document.getElementById(k),f=document.createElement('span');f.className='fb';i.parentNode.appendChild(f);i.addEventListener('input',function(){f.textContent='';f.className='fb'})});
+var card=document.getElementById('a').closest('.card');
+card.insertAdjacentHTML('beforeend','<div class="bar chk"><button type="button" id="chk">Ergebnisse prüfen</button></div><p class="hint chk">Die Prüfung sagt nur, ob dein Wert passt – nicht, wie er lautet.</p>');
+document.getElementById('chk').addEventListener('click',function(){keys.forEach(function(k){var i=document.getElementById(k),f=i.parentNode.querySelector('.fb'),s=i.value.trim(),c,t;
+if(!s){f.textContent='';f.className='fb';return}
+var v=num(s);if(!(v>0)){c='bad';t='Zahl nicht lesbar – z. B. 1,5 × 10^6 oder 1,5e6'}else{var r=v/T[k];if(Math.abs(r-1)<=0.03){c='ok';t='✓ passt'}else if(Math.abs(Math.log10(r))<0.5){c='mid';t='Richtige Größenordnung, aber die Zahl weicht ab – Rechenweg und Rundung prüfen'}else{c='bad';t='Größenordnung stimmt nicht – Zehnerpotenzen und Einheitenumrechnung prüfen'}}
+f.textContent=t;f.className='fb '+c})});
+var ci=document.getElementById('ci'),co=document.getElementById('co');
+function fmt(r){if(r===0)return '0';var a=Math.abs(r);return (a>=1e4||a<1e-3?r.toExponential(4).replace('e+',' × 10^').replace('e-',' × 10^-'):String(+r.toPrecision(6))).replace('.',',')}
+ci.addEventListener('input',function(){var s=ci.value.trim();if(!s){co.textContent='';return}
+var x=s.replace(/,/g,'.').replace(/[×·]/g,'*').replace(/−/g,'-').replace(/\^/g,'**').replace(/π/g,'Math.PI').replace(/sqrt/g,'Math.sqrt');
+if(!/^[\d+\-*\/().eE\s]*$/.test(x.replace(/Math\.PI|Math\.sqrt/g,''))){co.textContent='Ungültiger Ausdruck';return}
+try{var r=Function('"use strict";return ('+x+')')();co.textContent=isFinite(r)?'= '+fmt(r):'Ungültiger Ausdruck'}catch(e){co.textContent='Ungültiger Ausdruck'}});
+var pb=document.getElementById('pbar'),pt=document.getElementById('ptxt');
+function prog(){var n=0;keys.forEach(function(k){if(document.getElementById(k).value.trim())n++});ts.forEach(function(o){if(o.t.value.trim())n++});pb.style.width=n*10+'%';pt.textContent=n+' von 10 Feldern ausgefüllt'}
+document.addEventListener('input',prog);prog();
+var U={a:['M','kg'],b:['R','m'],c:['V','m³'],d:['ρ','kg/m³'],e:['g','m/s²']};
+function val(id){return document.getElementById(id).value.trim()||'—'}
+document.getElementById('copyall').addEventListener('click',function(){var L=['Weiße Zwerge – Sirius B',''];
+ids.forEach(function(id){L.push('1'+id+') '+U[id][0]+' = '+val(id)+' '+U[id][1]);var w=document.querySelector('[data-k="w'+id+'"]').value.trim();if(w)L.push('   Rechenweg: '+w);if(id==='d')L.push('   ρ/ρ⊕ = '+val('d2'));if(id==='e')L.push('   g/g⊕ = '+val('e2'))});
+L.push('');ts.forEach(function(o,i){L.push('2'+'abc'[i]+') '+(o.t.value.trim()||'—'),'')});copy(L.join('\n'))});
+window.addEventListener('wz-reset',function(){ws.forEach(function(t){t.value='';rm(t.dataset.k)});document.querySelectorAll('.fb').forEach(function(f){f.textContent='';f.className='fb'});setTimeout(function(){ts.forEach(function(o){o.u()});prog()},0)});
+})();
+</script>
+</body>
+</html>
