@@ -126,42 +126,13 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:va
 .res .mf{flex:1 1 220px;max-width:380px}
 .res .unit{font:500 17px var(--f-data);color:var(--muted)}
 .res.cmp{padding-top:2px}
-.src{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.foot{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:6px}
+.src{margin:0;font-size:13px;color:var(--muted)}
 .src strong{font-weight:600;color:var(--ink)}
 
 .toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:15px;transition:.2s;z-index:20;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
-
-/* PDF-Vorlage (außerhalb des Bildschirms, immer hell) */
-#pdfRoot{position:absolute;left:-10000px;top:0;width:688px;background:#fff;color:#131C2E;font:400 13px/1.5 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif}
-#pdfRoot .pb{width:688px;background:#fff;padding:2px 0 12px}
-#pdfRoot h1{margin:0;font:700 30px/1.1 'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;color:#131C2E}
-#pdfRoot .sub{margin:2px 0 10px;color:#576277;font-size:14px}
-#pdfRoot .meta{display:flex;gap:24px;margin:0 0 10px;font-size:13px}
-#pdfRoot .meta b{font-weight:600}
-#pdfRoot h2{margin:0 0 6px;font:700 19px/1.2 'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;color:#1D5FD1}
-#pdfRoot h3{margin:10px 0 4px;font:600 11px 'IBM Plex Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#576277}
-#pdfRoot p{margin:0 0 6px}
-#pdfRoot .rule{border-top:2px solid #131C2E;margin:0 0 10px}
-#pdfRoot table{width:100%;border-collapse:collapse;font-size:12.5px}
-#pdfRoot th{text-align:left;font:600 10.5px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#576277;padding:0 6px 4px 0;border-bottom:1px solid #131C2E}
-#pdfRoot td{padding:5px 6px 5px 0;border-bottom:1px solid #D2D9E5;vertical-align:top}
-#pdfRoot td:nth-child(2),#pdfRoot td:nth-child(3){font-family:'IBM Plex Mono',monospace;font-size:12px}
-#pdfRoot .fm{font-family:'IBM Plex Mono',monospace;font-size:14px;display:flex;gap:28px;flex-wrap:wrap;margin:4px 0 0}
-#pdfRoot .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 .2em}
-#pdfRoot .fr>span:first-child{border-bottom:1px solid #131C2E;padding:0 .25em}
-#pdfRoot .tq{margin:0 0 6px;font-weight:600}
-#pdfRoot .tq i{font-style:normal;color:#1D5FD1;margin-right:8px;font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700}
-#pdfRoot .way{margin:0 0 8px;padding:6px 10px;border:1px solid #D2D9E5;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;min-height:46px}
-#pdfRoot .way small{display:block;font:600 10px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#576277;margin-bottom:2px}
-#pdfRoot .ln{display:inline-block;min-width:230px;border-bottom:1px solid #131C2E;padding:0 6px;font-family:'IBM Plex Mono',monospace;font-size:14px;min-height:22px;vertical-align:middle}
-#pdfRoot .rl{margin:6px 0;font-size:14px}
-#pdfRoot .rl .s{font-family:'IBM Plex Mono',monospace;font-weight:500}
-#pdfRoot .tx{border:1px solid #D2D9E5;border-radius:4px;padding:0 10px;line-height:24px;white-space:pre-wrap;min-height:120px;
-  background-image:repeating-linear-gradient(transparent,transparent 23px,#D2D9E5 23px,#D2D9E5 24px)}
-#pdfRoot .ph{border-color:#9AA3B5}
-#pdfRoot .src{font-size:11px;color:#576277}
 
 @media (max-width:860px){
   html,body{height:auto}
@@ -174,8 +145,6 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:va
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.caret{animation:none}}
 </style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <header class="top">
   <div class="title">
@@ -185,7 +154,6 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:va
   <div class="who"><label for="name">Name</label><input id="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Vor- und Nachname"></div>
   <div class="prog" aria-live="polite"><span id="progText">0 von 10 ausgefüllt</span><div class="bar"><i id="progBar"></i></div></div>
   <button class="btn" id="resetBtn" type="button">Alles löschen</button>
-  <button class="btn primary" id="pdfBtn" type="button">Als PDF speichern</button>
 </header>
 
 <div class="layout">
@@ -223,7 +191,6 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:va
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div id="pdfRoot" aria-hidden="true"></div>
 
 <script>
 (function(){
@@ -438,7 +405,6 @@ var M=(function(){
       el._ni=i;host.appendChild(el);
     }
   }
-  function mathHTML(ed){var h=document.createElement('span');renderSeq(ed.root,h,null,false);return h.innerHTML;}
 
   /* Position aus einem Tipp bestimmen */
   function nearest(container,ev){
@@ -503,7 +469,7 @@ var M=(function(){
       set:function(s){var d=[];try{d=JSON.parse(s);}catch(e){}M.load(ed,d);draw();},
       empty:function(){return M.blank(ed.root);},
       reset:function(){M.reset(ed);draw();},
-      html:function(){return mathHTML(ed);},
+      seq:function(){return ed.root;},
       act:function(a){doAct(a);inp.focus({preventScroll:true});changed();}
     };
     inp.addEventListener('focus',function(){focused=true;activeField=api;root.classList.add('on');draw();});
@@ -567,7 +533,8 @@ var M=(function(){
     '<section class="panel intro"><h2>Arbeitsauftrag</h2><p>'+AUFTRAG+'</p><p>'+TIPP+'</p></section>'+
     '<h2 class="sec">1. Vorbetrachtungen und Berechnungen</h2>'+CALC.map(calcHTML).join('')+
     '<h2 class="sec">2. Auswertung</h2><p class="note">'+AUSW+'</p>'+TEXTS.map(textHTML).join('')+
-    '<p class="src"><strong>Quellen zu den Messwerten</strong><br>'+QUELLEN+'</p>';
+    '<div class="foot"><p class="src"><strong>Quellen zu den Messwerten</strong><br>'+QUELLEN+'</p>'+
+    '<button class="btn primary" id="pdfBtn" type="button">Als PDF speichern</button></div>';
 
   CALC.forEach(function(t){
     initMath('calc-'+t.id+'-way',true);
@@ -656,66 +623,289 @@ var M=(function(){
     toast('Arbeitsblatt geleert.');
   });
 
-  /* PDF-Vorlage */
-  function ln(id,extra){return '<span class="ln" style="'+(extra||'')+'">'+FIELDS[id].html()+'</span>';}
-  function pdfBlocks(){
-    var today=new Date().toLocaleDateString('de-DE');
-    var b=[];
-    b.push('<div class="pb"><h1>Weiße Zwerge</h1><p class="sub">Arbeitsblatt · Sirius B: Masse, Größe und Dichte</p>'+
-      '<div class="meta"><span><b>Name:</b> '+(esc(val('name'))||'________________')+'</span><span><b>Datum:</b> '+today+'</span></div>'+
-      '<div class="rule"></div><h3>Arbeitsauftrag</h3><p>'+AUFTRAG+'</p></div>');
-    b.push('<div class="pb"><h3>Benötigte Formeln</h3><div class="fm">'+
-      '<span>V = <span class="fr"><span>4</span><span>3</span></span> π R³</span>'+
-      '<span>ρ = <span class="fr"><span>M</span><span>V</span></span></span>'+
-      '<span>g = <span class="fr"><span>G M</span><span>R²</span></span></span></div>'+
-      '<h3>Beobachtungsdaten und Vergleichswerte</h3><table><thead><tr><th>Größe</th><th>Symbol/Formelzeichen</th><th>Wert</th></tr></thead><tbody>'+
-      '<tr><td>Masse von Sirius B</td><td>M</td><td>1,018 Sonnenmassen (M☉)</td></tr>'+
-      '<tr><td>Radius von Sirius B</td><td>R</td><td>0,008098 Sonnenradien (R☉)</td></tr>'+
-      '<tr><td>Sonnenmasse</td><td>M☉</td><td>1,9885 × 10³⁰ kg</td></tr>'+
-      '<tr><td>Sonnenradius</td><td>R☉</td><td>6,957 × 10⁸ m</td></tr>'+
-      '<tr><td>Erdradius</td><td>R⊕</td><td>6,371 × 10⁶ m</td></tr>'+
-      '<tr><td>Mittlere Erddichte</td><td>ρ⊕</td><td>5,51 × 10³ kg/m³</td></tr>'+
-      '<tr><td>Erdbeschleunigung</td><td>g⊕</td><td>9,81 m/s²</td></tr>'+
-      '<tr><td>Gravitationskonstante</td><td>G</td><td>6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</td></tr>'+
-      '</tbody></table></div>');
-    CALC.forEach(function(t,i){
-      var h=(i===0?'<h2>1. Vorbetrachtungen und Berechnungen</h2>':'');
-      b.push('<div class="pb">'+h+'<p class="tq"><i>'+t.id+')</i>'+t.q+'</p>'+
-        '<div class="way"><small>Rechenweg</small>'+FIELDS['calc-'+t.id+'-way'].html()+'</div>'+
-        '<div class="rl"><span class="s">'+t.sym+' =</span> '+ln('calc-'+t.id+'-res')+' '+t.unit+'</div>'+
-        (t.cmp?'<div class="rl">Vergleich mit der Erde: '+t.cmp+' '+ln('calc-'+t.id+'-cmp','min-width:160px')+'</div>':'')+
-        '</div>');
+  /* PDF: wird direkt auf Zeichenflächen gezeichnet und als PDF-Datei geschrieben (keine Fremdbibliothek). */
+  var INK='#131C2E',MUTED='#576277',ACCENT='#1D5FD1',LINE='#D2D9E5';
+  var F_BODY='"IBM Plex Sans","Helvetica Neue",Arial,sans-serif';
+  var F_MONO='"IBM Plex Mono",Menlo,"Courier New",monospace';
+  var F_DISP='"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';
+
+  function nodeBox(nd,size,g){
+    if(nd.t==='c'){
+      g.font='400 '+size+'px '+F_MONO;
+      var w=g.measureText(nd.v).width;
+      return {w:w,asc:size*.78,desc:size*.22,draw:function(c,x,y){c.font='400 '+size+'px '+F_MONO;c.fillText(nd.v,x,y);}};
+    }
+    if(nd.t==='sup'){
+      var s=seqBox(nd.s,size*.7,g),r=size*.42;
+      return {w:s.w+1,asc:s.asc+r,desc:Math.max(0,s.desc-r),draw:function(c,x,y){s.draw(c,x+.5,y-r);}};
+    }
+    var n=seqBox(nd.n,size,g),d=seqBox(nd.d,size,g);
+    var w2=Math.max(n.w,d.w,size*.5)+size*.5,ax=size*.3,gp=size*.12;
+    var nb=ax+gp+n.desc,db=-ax+gp+d.asc;
+    return {w:w2,asc:nb+n.asc,desc:db+d.desc,draw:function(c,x,y){
+      n.draw(c,x+(w2-n.w)/2,y-nb);d.draw(c,x+(w2-d.w)/2,y+db);
+      c.strokeStyle=INK;c.lineWidth=Math.max(.6,size*.07);
+      c.beginPath();c.moveTo(x+size*.1,y-ax);c.lineTo(x+w2-size*.1,y-ax);c.stroke();
+    }};
+  }
+  function seqBox(seq,size,g){
+    var items=[],w=0,asc=size*.78,desc=size*.22;
+    seq.forEach(function(nd){
+      if(nd.t==='nl')return;
+      var b=nodeBox(nd,size,g);items.push(b);
+      w+=b.w;asc=Math.max(asc,b.asc);desc=Math.max(desc,b.desc);
     });
-    TEXTS.forEach(function(t,i){
-      var h=(i===0?'<h2>2. Auswertung</h2><p>'+AUSW+'</p>':'');
-      b.push('<div class="pb">'+h+'<p class="tq"><i>'+t.id+')</i>'+t.q+'</p><div class="tx">'+esc(val('text-'+t.id))+'</div></div>');
+    if(!items.length)w=size*.4;
+    return {w:w,asc:asc,desc:desc,draw:function(c,x,y){items.forEach(function(b){b.draw(c,x,y);x+=b.w;});}};
+  }
+  function mathLines(seq,size,maxW,g){
+    var lines=[],cur={items:[],w:0,asc:size*.78,desc:size*.22};
+    function push(){lines.push(cur);cur={items:[],w:0,asc:size*.78,desc:size*.22};}
+    seq.forEach(function(nd){
+      if(nd.t==='nl'){push();return;}
+      var b=nodeBox(nd,size,g);
+      if(cur.items.length&&cur.w+b.w>maxW)push();
+      cur.items.push(b);cur.w+=b.w;
+      cur.asc=Math.max(cur.asc,b.asc);cur.desc=Math.max(cur.desc,b.desc);
     });
-    b.push('<div class="pb"><p class="src"><b>Quellen zu den Messwerten</b><br>'+QUELLEN+'</p></div>');
-    return b;
+    lines.push(cur);
+    return lines;
+  }
+  function linesH(lines){var h=0;lines.forEach(function(l){h+=l.asc+l.desc+4;});return h;}
+  function drawLines(g,lines,x,y){
+    lines.forEach(function(l){
+      var cx=x,base=y+l.asc;
+      l.items.forEach(function(b){b.draw(g,cx,base);cx+=b.w;});
+      y+=l.asc+l.desc+4;
+    });
+  }
+  function breakLong(g,s,maxW){
+    var out=[],cur='';
+    for(var k=0;k<s.length;k++){
+      if(cur&&g.measureText(cur+s.charAt(k)).width>maxW){out.push(cur);cur='';}
+      cur+=s.charAt(k);
+    }
+    out.push(cur);
+    return out;
+  }
+  function wrap(g,text,maxW){
+    var out=[];
+    String(text).split('\n').forEach(function(par){
+      var line='';
+      par.split(' ').forEach(function(w){
+        var t=line?line+' '+w:w;
+        if(!line||g.measureText(t).width<=maxW)line=t;
+        else{out.push(line);line=w;}
+      });
+      out.push(line);
+    });
+    var res=[];
+    out.forEach(function(l){
+      if(g.measureText(l).width>maxW)breakLong(g,l,maxW).forEach(function(p){res.push(p);});
+      else res.push(l);
+    });
+    return res;
+  }
+
+  function strBytes(s){var u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u;}
+  function dataUrlBytes(url){
+    var b=atob(url.split(',')[1]),u=new Uint8Array(b.length);
+    for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);
+    return u;
+  }
+  function writePdf(canvases,PW,PH){
+    var chunks=[],pos=0,offs=[];
+    function put(x){var u=typeof x==='string'?strBytes(x):x;chunks.push(u);pos+=u.length;}
+    function obj(id,head,stream){
+      offs[id]=pos;
+      put(id+' 0 obj\n'+head);
+      if(stream){put('\nstream\n');put(stream);put('\nendstream');}
+      put('\nendobj\n');
+    }
+    var n=canvases.length;
+    put('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+    obj(1,'<< /Type /Catalog /Pages 2 0 R >>');
+    var kids=[];for(var i=0;i<n;i++)kids.push((3+3*i)+' 0 R');
+    obj(2,'<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>');
+    for(var p=0;p<n;p++){
+      var c=canvases[p],jpg=dataUrlBytes(c.toDataURL('image/jpeg',0.92));
+      var content='q '+PW+' 0 0 '+PH+' 0 0 cm /Im0 Do Q';
+      obj(3+3*p,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 '+(5+3*p)+' 0 R >> >> /Contents '+(4+3*p)+' 0 R >>');
+      obj(4+3*p,'<< /Length '+content.length+' >>',strBytes(content));
+      obj(5+3*p,'<< /Type /XObject /Subtype /Image /Width '+c.width+' /Height '+c.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>',jpg);
+    }
+    var total=3+3*n,xref=pos,x='xref\n0 '+total+'\n0000000000 65535 f \n';
+    for(var k=1;k<total;k++)x+=('0000000000'+offs[k]).slice(-10)+' 00000 n \n';
+    put(x+'trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF');
+    return new Blob(chunks,{type:'application/pdf'});
   }
 
   async function makePdf(){
-    var root=$('pdfRoot');
-    root.innerHTML=pdfBlocks().join('');
-    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
-    var JsPDF=window.jspdf.jsPDF;
-    var doc=new JsPDF({unit:'mm',format:'a4'});
-    var M0=14,W=182,PH=297,gap=2,y=M0;
-    var blocks=root.querySelectorAll('.pb');
-    for(var i=0;i<blocks.length;i++){
-      var c=await html2canvas(blocks[i],{scale:2,backgroundColor:'#ffffff',logging:false,useCORS:true,
-        onclone:function(d){var r=d.getElementById('pdfRoot');if(r){r.style.left='0';}}});
-      var w=W,h=c.height/c.width*W,maxH=PH-2*M0;
-      if(h>maxH){w=W*maxH/h;h=maxH;}
-      if(y+h>PH-M0&&y>M0){doc.addPage();y=M0;}
-      doc.addImage(c.toDataURL('image/jpeg',0.93),'JPEG',M0,y,w,h);
-      y+=h+gap;
+    try{
+      if(document.fonts&&document.fonts.load){
+        await Promise.race([
+          Promise.all(['400 12px "IBM Plex Sans"','500 12px "IBM Plex Sans"','600 12px "IBM Plex Sans"','400 12px "IBM Plex Mono"','700 20px "Bricolage Grotesque"'].map(function(f){return document.fonts.load(f);})),
+          new Promise(function(r){setTimeout(r,2500);})
+        ]);
+      }
+    }catch(e){}
+    var PW=595.28,PH=841.89,MX=40,MT=44,MB=50,CW=PW-2*MX,K=1654/PW;
+    var pages=[],g=null,y=0;
+    function newPage(){
+      var c=document.createElement('canvas');
+      c.width=Math.round(PW*K);c.height=Math.round(PH*K);
+      var ctx=c.getContext('2d');
+      ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);
+      ctx.scale(K,K);ctx.textBaseline='alphabetic';
+      pages.push({c:c,g:ctx});g=ctx;y=MT;
     }
-    var total=doc.getNumberOfPages();
-    doc.setFontSize(9);doc.setTextColor(120,128,145);
-    for(var p=1;p<=total;p++){doc.setPage(p);doc.text('Weisse Zwerge · Arbeitsblatt Sirius B · Seite '+p+' von '+total,M0,PH-6);}
-    root.innerHTML='';
-    return doc.output('blob');
+    function need(h){if(y+h>PH-MB)newPage();}
+    function label(s){
+      need(16);g.fillStyle=MUTED;g.font='600 8.5px '+F_BODY;g.fillText(s.toUpperCase(),MX,y+8);y+=15;
+    }
+    function para(s,font,color,lh,x,w){
+      g.font=font;g.fillStyle=color;
+      wrap(g,s,w).forEach(function(l){need(lh);g.font=font;g.fillStyle=color;g.fillText(l,x,y+lh-4);y+=lh;});
+    }
+    function rule(c,h){g.fillStyle=c;g.fillRect(MX,y,CW,h);}
+
+    newPage();
+    g.fillStyle=INK;g.font='700 28px '+F_DISP;g.fillText('Weiße Zwerge',MX,y+24);y+=36;
+    g.fillStyle=MUTED;g.font='400 12px '+F_BODY;g.fillText('Arbeitsblatt · Sirius B: Masse, Größe und Dichte',MX,y+8);y+=24;
+    g.fillStyle=INK;g.font='600 12px '+F_BODY;g.fillText('Name:',MX,y+10);
+    g.font='400 12px '+F_BODY;g.fillText(val('name'),MX+40,y+9);
+    g.fillStyle=LINE;g.fillRect(MX+38,y+13,230,.8);
+    g.fillStyle=INK;g.font='600 12px '+F_BODY;g.fillText('Datum:',MX+300,y+10);
+    g.font='400 12px '+F_BODY;g.fillText(new Date().toLocaleDateString('de-DE'),MX+344,y+9);
+    y+=28;rule(INK,1.5);y+=14;
+    label('Arbeitsauftrag');
+    para(AUFTRAG,'400 12px '+F_BODY,INK,17,MX,CW);
+    y+=10;
+
+    /* Formeln */
+    function C(s){return s.split('').map(function(ch){return {t:'c',v:ch};});}
+    function FR(n,d){return {t:'fr',n:C(n),d:C(d)};}
+    var forms=[C('V=').concat([FR('4','3')],C('πR'),[{t:'sup',s:C('3')}]),
+               C('ρ=').concat([FR('M','V')]),
+               C('g=').concat([{t:'fr',n:C('GM'),d:C('R').concat([{t:'sup',s:C('2')}])}])];
+    var fbox=forms.map(function(s){return seqBox(s,15,g);});
+    var fh=0;fbox.forEach(function(b){fh=Math.max(fh,b.asc+b.desc);});
+    need(fh+40);
+    label('Benötigte Formeln');
+    g.fillStyle=INK;
+    var fx=MX;
+    fbox.forEach(function(b,i){
+      g.fillStyle=INK;b.draw(g,fx,y+fbox.reduce(function(m,q){return Math.max(m,q.asc);},0));
+      fx+=b.w+44;
+    });
+    y+=fh+16;
+
+    /* Tabelle */
+    var rows=[
+      ['Masse von Sirius B','M','1,018 Sonnenmassen (M☉)'],
+      ['Radius von Sirius B','R','0,008098 Sonnenradien (R☉)'],
+      ['Sonnenmasse','M☉','1,9885 × 10³⁰ kg'],
+      ['Sonnenradius','R☉','6,957 × 10⁸ m'],
+      ['Erdradius','R⊕','6,371 × 10⁶ m'],
+      ['Mittlere Erddichte','ρ⊕','5,51 × 10³ kg/m³'],
+      ['Erdbeschleunigung','g⊕','9,81 m/s²'],
+      ['Gravitationskonstante','G','6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²']
+    ];
+    need(20*(rows.length+1)+30);
+    label('Beobachtungsdaten und Vergleichswerte');
+    var c1=MX,c2=MX+190,c3=MX+250;
+    g.fillStyle=MUTED;g.font='600 8.5px '+F_BODY;
+    g.fillText('GRÖSSE',c1,y+9);g.fillText('SYMBOL/FORMELZEICHEN',c2,y+9);g.fillText('WERT',c3+60,y+9);
+    y+=14;rule(INK,1);y+=1;
+    rows.forEach(function(r){
+      g.fillStyle=INK;g.font='400 11px '+F_BODY;g.fillText(r[0],c1,y+14);
+      g.font='400 10.5px '+F_MONO;g.fillText(r[1],c2,y+14);g.fillText(r[2],c3+60,y+14);
+      y+=20;rule(LINE,.8);
+    });
+    y+=20;
+
+    /* Aufgaben */
+    function section(title,note,firstH){
+      var noteL=note?wrap((g.font='400 12px '+F_BODY,g),note,CW):[];
+      need(34+noteL.length*17+Math.min(firstH,200));
+      g.fillStyle=ACCENT;g.font='700 17px '+F_DISP;g.fillText(title,MX,y+16);y+=28;
+      if(noteL.length)para(note,'400 12px '+F_BODY,MUTED,17,MX,CW);
+      y+=4;
+    }
+    function resRow(id,sym,unit,labelText,minW){
+      var X=MX+26,seq=FIELDS[id].seq(),box=seqBox(seq,13,g);
+      var fw=Math.max(minW,box.w+14),rowH=box.asc+box.desc+10,base=y+box.asc+3;
+      var x0;
+      g.fillStyle=INK;
+      if(labelText){g.font='400 11.5px '+F_BODY;g.fillText(labelText,X,base);x0=X+g.measureText(labelText).width+8;}
+      else{g.font='500 13px '+F_MONO;g.fillText(sym+' =',X,base);x0=X+44;}
+      g.fillStyle=INK;box.draw(g,x0+6,base);
+      g.fillStyle=INK;g.fillRect(x0,y+rowH-4,fw,.9);
+      if(unit){g.font='400 12px '+F_MONO;g.fillStyle=INK;g.fillText(unit,x0+fw+8,base);}
+      y+=rowH+4;
+    }
+    function resH(id){var b=seqBox(FIELDS[id].seq(),13,g);return b.asc+b.desc+14;}
+    function calcTask(t,first){
+      var X=MX+26,W=CW-26;
+      g.font='600 12.5px '+F_BODY;
+      var ql=wrap(g,t.q,W);
+      var wayL=mathLines(FIELDS['calc-'+t.id+'-way'].seq(),12.5,W-20,g);
+      var wayH=Math.max(44,linesH(wayL)+14);
+      var rid='calc-'+t.id+'-res',cid='calc-'+t.id+'-cmp';
+      var total=ql.length*16+8+12+wayH+10+resH(rid)+(t.cmp?8+resH(cid):0)+16;
+      return {total:total,draw:function(){
+        need(total);
+        g.fillStyle=ACCENT;g.font='700 14px '+F_DISP;g.fillText(t.id+')',MX,y+13);
+        g.fillStyle=INK;g.font='600 12.5px '+F_BODY;
+        ql.forEach(function(l,i){g.fillText(l,X,y+13+i*16);});
+        y+=ql.length*16+8;
+        g.fillStyle=MUTED;g.font='600 8.5px '+F_BODY;g.fillText('RECHENWEG',X,y+8);y+=12;
+        g.strokeStyle=LINE;g.lineWidth=1;g.strokeRect(X,y,W,wayH);
+        g.fillStyle=INK;drawLines(g,wayL,X+10,y+7);
+        y+=wayH+10;
+        resRow(rid,t.sym,t.unit,null,170);
+        if(t.cmp){y+=4;resRow(cid,null,null,'Vergleich mit der Erde: '+t.cmp,150);}
+        y+=12;
+      }};
+    }
+    function textTask(t){
+      var X=MX+26,W=CW-26;
+      g.font='600 12.5px '+F_BODY;
+      var ql=wrap(g,t.q,W);
+      g.font='400 12px '+F_BODY;
+      var al=wrap(g,FIELDS['text-'+t.id].get(),W-4);
+      var n=Math.max(5,al.length);
+      return {total:ql.length*16+8+66,draw:function(){
+        need(ql.length*16+8+66);
+        g.fillStyle=ACCENT;g.font='700 14px '+F_DISP;g.fillText(t.id+')',MX,y+13);
+        g.fillStyle=INK;g.font='600 12.5px '+F_BODY;
+        ql.forEach(function(l,i){g.fillText(l,X,y+13+i*16);});
+        y+=ql.length*16+6;
+        for(var i=0;i<n;i++){
+          need(22);
+          if(al[i]){g.fillStyle=INK;g.font='400 12px '+F_BODY;g.fillText(al[i],X+2,y+16);}
+          g.fillStyle=LINE;g.fillRect(X,y+20,W,.8);
+          y+=22;
+        }
+        y+=14;
+      }};
+    }
+    var calcs=CALC.map(calcTask);
+    section('1. Vorbetrachtungen und Berechnungen',null,calcs[0].total);
+    calcs.forEach(function(c){c.draw();});
+    var texts=TEXTS.map(textTask);
+    section('2. Auswertung',AUSW,texts[0].total);
+    texts.forEach(function(t){t.draw();});
+    need(50);
+    label('Quellen zu den Messwerten');
+    para(QUELLEN,'400 9.5px '+F_BODY,MUTED,13,MX,CW);
+
+    var total=pages.length;
+    pages.forEach(function(p,i){
+      p.g.fillStyle=MUTED;p.g.font='400 9px '+F_BODY;
+      p.g.fillText('Weisse Zwerge · Arbeitsblatt Sirius B · Seite '+(i+1)+' von '+total,MX,PH-24);
+    });
+    return writePdf(pages.map(function(p){return p.c;}),PW.toFixed(2),PH.toFixed(2));
   }
 
   /* Download-Fähigkeit */
@@ -729,7 +919,6 @@ var M=(function(){
   pdfBtn.addEventListener('click',async function(){
     if(busy)return;
     if(!downloads){toast('Speichern ist in dieser Ansicht nicht verfügbar.');return;}
-    if(!window.html2canvas||!window.jspdf){toast('PDF-Werkzeug konnte nicht geladen werden. Bitte Seite neu laden.');return;}
     busy=true;var old=pdfBtn.textContent;pdfBtn.disabled=true;pdfBtn.textContent='PDF wird erstellt …';
     try{
       var blob=await makePdf();
@@ -740,7 +929,7 @@ var M=(function(){
       var code=e&&e.code;
       if(code==='declined')toast('Speichern abgebrochen.');
       else if(code==='rate_limited')toast('Bitte einen Moment warten und noch einmal tippen.');
-      else toast('Das PDF konnte nicht gespeichert werden.');
+      else toast('Das PDF konnte nicht gespeichert werden'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'.');
     }finally{
       busy=false;pdfBtn.disabled=!downloads;pdfBtn.textContent=old;
     }
