@@ -1,0 +1,751 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Arbeitsblatt Weiße Zwerge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Kopfleiste oben, darunter links fest stehende Messwert-Spalte, rechts scrollende Aufgaben mit angeheftetem Formel-Eingabeleiste (iPad quer). */
+:root{
+  --bg:#EEF1F6; --surface:#FFFFFF; --field:#F6F8FC; --ink:#131C2E; --muted:#576277;
+  --line:#D2D9E5; --accent:#1D5FD1; --accent-ink:#FFFFFF; --accent-soft:#E2ECFC; --danger:#B3261E;
+  --f-display:'Bricolage Grotesque','Avenir Next','Helvetica Neue',Arial,sans-serif;
+  --f-body:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --f-data:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B111B; --surface:#141C2A; --field:#0E1521; --ink:#E6EBF4; --muted:#93A0B6;
+    --line:#29344A; --accent:#6FA6FF; --accent-ink:#0B111B; --accent-soft:#1A2A47; --danger:#FF8A80; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B111B; --surface:#141C2A; --field:#0E1521; --ink:#E6EBF4; --muted:#93A0B6;
+  --line:#29344A; --accent:#6FA6FF; --accent-ink:#0B111B; --accent-soft:#1A2A47; --danger:#FF8A80; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; display:flex; flex-direction:column;
+  padding-block:0;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  background:var(--bg); color:var(--ink);
+  font:400 16px/1.5 var(--f-body);
+  -webkit-text-size-adjust:100%;
+}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Kopfleiste */
+.top{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-block:12px;border-bottom:1px solid var(--line)}
+.title{margin-right:auto;min-width:0}
+.title h1{margin:0;font:700 28px/1.1 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.title p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.who{display:flex;align-items:center;gap:8px}
+.who label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.who input{width:200px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.prog{min-width:150px}
+.prog span{display:block;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:6px;margin-top:4px;border-radius:3px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.btn{min-height:44px;padding:8px 18px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn:active:not(:disabled){transform:translateY(1px)}
+
+/* Zwei Spalten */
+.layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(330px,384px) minmax(0,1fr);gap:20px;padding-block:16px}
+aside,main{min-height:0;min-width:0;overflow:auto;-webkit-overflow-scrolling:touch}
+aside{display:flex;flex-direction:column;gap:14px}
+main{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;scroll-padding-top:130px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel h2{margin:0 0 8px;font:600 12px/1.3 var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.formulas{display:grid;gap:6px;font-family:var(--f-data);font-size:16px}
+.formulas div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.formulas small{font:400 12px var(--f-body);color:var(--muted)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 .2em}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 .25em}
+
+table.data{width:100%;border-collapse:collapse;font-size:14px}
+table.data th{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 6px 6px 0}
+table.data td{padding:7px 6px 7px 0;border-top:1px solid var(--line);vertical-align:top}
+table.data td:nth-child(2){font-family:var(--f-data);color:var(--accent);white-space:nowrap;padding-right:10px}
+table.data td:nth-child(3){font-family:var(--f-data);font-size:13px}
+table.data tr.own td{background:var(--accent-soft)}
+table.data tr.own td:first-child{padding-left:6px}
+
+/* Eingabeleiste für Formeln (bleibt oben in der Aufgabenspalte stehen) */
+.kp{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;gap:6px 16px;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 16px rgba(10,20,40,.10)}
+.kg{display:flex;flex-wrap:wrap;gap:6px}
+.kb{min-width:46px;height:44px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--field);
+  font:500 18px/1 var(--f-data);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+  touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.kb:active{background:var(--accent-soft);border-color:var(--accent)}
+.kb sup{font-size:.62em;line-height:0;position:relative;top:-.1em}
+.kb .fr{font-size:12px;margin:0}
+.kb .fr>span{min-width:10px;text-align:center}
+.kb.nav{background:var(--accent-soft)}
+
+/* Formel-Felder */
+.mf{position:relative;display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--field);cursor:text}
+.mf.on{border-color:var(--accent);outline:3px solid var(--accent-soft)}
+.mfv{position:relative;padding:10px 14px;min-height:48px;font:400 18px/1.5 var(--f-data);overflow-wrap:anywhere;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.mf.ml .mfv{min-height:88px}
+.mfv.empty::after{content:attr(data-ph);position:absolute;left:18px;top:12px;font:400 15px var(--f-body);color:var(--muted);pointer-events:none}
+.mfi{position:absolute;inset:0;width:100%;height:100%;z-index:2;margin:0;padding:0;border:0;background:transparent;
+  opacity:0;color:transparent;caret-color:transparent;font-size:16px}
+/* Bausteine einer Formel (auch im PDF verwendet) */
+.mc{white-space:pre}
+.mfr{display:inline-block;vertical-align:middle;text-align:center;margin:0 3px}
+.mn{display:block;padding:0 4px 1px;min-width:.9em;border-bottom:1.5px solid currentColor}
+.md{display:block;padding:1px 4px 0;min-width:.9em}
+.msup{position:relative;top:-.55em;font-size:.72em;margin-left:1px}
+.ph{display:inline-block;width:.6em;height:.95em;margin:0 1px;vertical-align:text-bottom;border:1.5px dashed var(--muted);border-radius:2px}
+.caret{display:inline-block;width:0;height:1.15em;margin:0 -1px;vertical-align:text-bottom;border-left:2px solid var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Aufgaben */
+.intro p{margin:0 0 6px}
+.intro p:last-child{margin:0;color:var(--muted);font-size:14px}
+.sec{margin:10px 0 0;font:700 22px/1.2 var(--f-display);letter-spacing:-.005em}
+.sec+.note{margin:-6px 0 0;color:var(--muted)}
+.task{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.tl{font:700 22px/1 var(--f-display);color:var(--accent)}
+.tb{min-width:0;display:flex;flex-direction:column;gap:12px}
+.q{margin:0;font-weight:500}
+.way .lbl{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--field);padding:10px 12px;display:block;resize:vertical;line-height:1.5}
+.answer textarea{min-height:150px}
+.res{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.res .sym{font:500 20px var(--f-data);min-width:44px}
+.res .sym.wide{font:500 15px var(--f-body);min-width:0}
+.res .mf{flex:1 1 220px;max-width:380px}
+.res .unit{font:500 17px var(--f-data);color:var(--muted)}
+.res.cmp{padding-top:2px}
+.src{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.src strong{font-weight:600;color:var(--ink)}
+
+.toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:15px;transition:.2s;z-index:20;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* PDF-Vorlage (außerhalb des Bildschirms, immer hell) */
+#pdfRoot{position:absolute;left:-10000px;top:0;width:688px;background:#fff;color:#131C2E;font:400 13px/1.5 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif}
+#pdfRoot .pb{width:688px;background:#fff;padding:2px 0 12px}
+#pdfRoot h1{margin:0;font:700 30px/1.1 'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;color:#131C2E}
+#pdfRoot .sub{margin:2px 0 10px;color:#576277;font-size:14px}
+#pdfRoot .meta{display:flex;gap:24px;margin:0 0 10px;font-size:13px}
+#pdfRoot .meta b{font-weight:600}
+#pdfRoot h2{margin:0 0 6px;font:700 19px/1.2 'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;color:#1D5FD1}
+#pdfRoot h3{margin:10px 0 4px;font:600 11px 'IBM Plex Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#576277}
+#pdfRoot p{margin:0 0 6px}
+#pdfRoot .rule{border-top:2px solid #131C2E;margin:0 0 10px}
+#pdfRoot table{width:100%;border-collapse:collapse;font-size:12.5px}
+#pdfRoot th{text-align:left;font:600 10.5px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#576277;padding:0 6px 4px 0;border-bottom:1px solid #131C2E}
+#pdfRoot td{padding:5px 6px 5px 0;border-bottom:1px solid #D2D9E5;vertical-align:top}
+#pdfRoot td:nth-child(2),#pdfRoot td:nth-child(3){font-family:'IBM Plex Mono',monospace;font-size:12px}
+#pdfRoot .fm{font-family:'IBM Plex Mono',monospace;font-size:14px;display:flex;gap:28px;flex-wrap:wrap;margin:4px 0 0}
+#pdfRoot .fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 .2em}
+#pdfRoot .fr>span:first-child{border-bottom:1px solid #131C2E;padding:0 .25em}
+#pdfRoot .tq{margin:0 0 6px;font-weight:600}
+#pdfRoot .tq i{font-style:normal;color:#1D5FD1;margin-right:8px;font-family:'Bricolage Grotesque',Arial,sans-serif;font-weight:700}
+#pdfRoot .way{margin:0 0 8px;padding:6px 10px;border:1px solid #D2D9E5;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:13px;line-height:1.6;min-height:46px}
+#pdfRoot .way small{display:block;font:600 10px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#576277;margin-bottom:2px}
+#pdfRoot .ln{display:inline-block;min-width:230px;border-bottom:1px solid #131C2E;padding:0 6px;font-family:'IBM Plex Mono',monospace;font-size:14px;min-height:22px;vertical-align:middle}
+#pdfRoot .rl{margin:6px 0;font-size:14px}
+#pdfRoot .rl .s{font-family:'IBM Plex Mono',monospace;font-weight:500}
+#pdfRoot .tx{border:1px solid #D2D9E5;border-radius:4px;padding:0 10px;line-height:24px;white-space:pre-wrap;min-height:120px;
+  background-image:repeating-linear-gradient(transparent,transparent 23px,#D2D9E5 23px,#D2D9E5 24px)}
+#pdfRoot .ph{border-color:#9AA3B5}
+#pdfRoot .src{font-size:11px;color:#576277}
+
+@media (max-width:860px){
+  html,body{height:auto}
+  .layout{display:block}
+  aside,main{overflow:visible}
+  aside{margin-bottom:14px}
+  .kp{top:env(safe-area-inset-top,0px)}
+  .who input{width:150px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.caret{animation:none}}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<header class="top">
+  <div class="title">
+    <h1>Weiße Zwerge</h1>
+    <p>Arbeitsblatt · Sirius B: Masse, Größe und Dichte</p>
+  </div>
+  <div class="who"><label for="name">Name</label><input id="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Vor- und Nachname"></div>
+  <div class="prog" aria-live="polite"><span id="progText">0 von 10 ausgefüllt</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="btn" id="resetBtn" type="button">Alles löschen</button>
+  <button class="btn primary" id="pdfBtn" type="button">Als PDF speichern</button>
+</header>
+
+<div class="layout">
+  <aside aria-label="Formeln und Messwerte, immer sichtbar">
+    <section class="panel">
+      <h2>Benötigte Formeln</h2>
+      <div class="formulas">
+        <div><span>Volumen einer Kugel:</span></div>
+        <div>V = <span class="fr"><span>4</span><span>3</span></span> π R³</div>
+        <div><small>Mittlere Dichte:</small></div>
+        <div>ρ = <span class="fr"><span>M</span><span>V</span></span></div>
+        <div><small>Oberflächengravitation:</small></div>
+        <div>g = <span class="fr"><span>G M</span><span>R²</span></span></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Beobachtungsdaten und Vergleichswerte</h2>
+      <table class="data">
+        <thead><tr><th>Größe</th><th>Symbol</th><th>Wert</th></tr></thead>
+        <tbody>
+          <tr class="own"><td>Masse von Sirius B</td><td>M</td><td>1,018 Sonnenmassen (M☉)</td></tr>
+          <tr class="own"><td>Radius von Sirius B</td><td>R</td><td>0,008098 Sonnenradien (R☉)</td></tr>
+          <tr><td>Sonnenmasse</td><td>M☉</td><td>1,9885 × 10³⁰ kg</td></tr>
+          <tr><td>Sonnenradius</td><td>R☉</td><td>6,957 × 10⁸ m</td></tr>
+          <tr><td>Erdradius</td><td>R⊕</td><td>6,371 × 10⁶ m</td></tr>
+          <tr><td>Mittlere Erddichte</td><td>ρ⊕</td><td>5,51 × 10³ kg/m³</td></tr>
+          <tr><td>Erdbeschleunigung</td><td>g⊕</td><td>9,81 m/s²</td></tr>
+          <tr><td>Gravitationskonstante</td><td>G</td><td>6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </aside>
+
+  <main id="main" aria-label="Aufgaben"></main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="pdfRoot" aria-hidden="true"></div>
+
+<script>
+(function(){
+var M=(function(){
+  /* Formel-Modell: Folge (Seq) aus Knoten.
+     {t:'c',v}  Zeichen | {t:'nl'} Zeilenumbruch
+     {t:'fr',n:Seq,d:Seq} Bruch | {t:'sup',s:Seq} Hochzahl
+     Jede Seq hat .p = {node,slot,owner} (null an der Wurzel). */
+  function link(seq,p){
+    seq.p=p;
+    for(var k=0;k<seq.length;k++){
+      var nd=seq[k];
+      if(nd.t==='fr'){link(nd.n,{node:nd,slot:'n',owner:seq});link(nd.d,{node:nd,slot:'d',owner:seq});}
+      else if(nd.t==='sup'){link(nd.s,{node:nd,slot:'s',owner:seq});}
+    }
+  }
+  function newEd(){var r=[];link(r,null);return {root:r,seq:r,i:0};}
+  function relink(ed){link(ed.root,null);}
+  function isCh(nd,c){return !!nd&&nd.t==='c'&&nd.v===c;}
+  function isOperand(nd){
+    if(nd.t==='sup'||nd.t==='fr')return true;
+    return nd.t==='c'&&/[0-9A-Za-zÄÖÜäöüßπρ☉⊕.,]/.test(nd.v);
+  }
+  function emptyNode(nd){
+    if(nd.t==='fr')return !nd.n.length&&!nd.d.length;
+    if(nd.t==='sup')return !nd.s.length;
+    return false;
+  }
+  function blank(seq){
+    for(var k=0;k<seq.length;k++){
+      var nd=seq[k];
+      if(nd.t==='c'){if(nd.v.trim()!=='')return false;}
+      else if(nd.t==='fr'){if(!blank(nd.n)||!blank(nd.d))return false;}
+      else if(nd.t==='sup'){if(!blank(nd.s))return false;}
+    }
+    return true;
+  }
+  function clean(a,depth){
+    var out=[];
+    if(!Array.isArray(a)||depth>6)return out;
+    for(var k=0;k<a.length;k++){
+      var nd=a[k];
+      if(!nd||typeof nd!=='object')continue;
+      if(nd.t==='c'&&typeof nd.v==='string'&&nd.v.length>0&&nd.v.length<=2)out.push({t:'c',v:nd.v});
+      else if(nd.t==='nl')out.push({t:'nl'});
+      else if(nd.t==='fr')out.push({t:'fr',n:clean(nd.n,depth+1),d:clean(nd.d,depth+1)});
+      else if(nd.t==='sup')out.push({t:'sup',s:clean(nd.s,depth+1)});
+    }
+    return out;
+  }
+  function load(ed,data){
+    ed.root=clean(data,0);ed.seq=ed.root;ed.i=ed.root.length;relink(ed);
+  }
+  function reset(ed){ed.root=[];ed.seq=ed.root;ed.i=0;relink(ed);}
+
+  function insSup(ed){
+    var sp={t:'sup',s:[]};
+    ed.seq.splice(ed.i,0,sp);
+    ed.seq=sp.s;ed.i=0;relink(ed);
+  }
+  function insFrac(ed){
+    var s=ed.seq,j=ed.i,start=j,num=null;
+    if(j>0&&isCh(s[j-1],')')){
+      var depth=0,k=j-1;
+      for(;k>=0;k--){
+        if(isCh(s[k],')'))depth++;
+        else if(isCh(s[k],'(')){depth--;if(depth===0)break;}
+      }
+      if(k>=0){num=s.slice(k+1,j-1);start=k;}
+    }
+    if(num===null){
+      while(start>0&&isOperand(s[start-1]))start--;
+      num=s.slice(start,j);
+    }
+    s.splice(start,j-start);
+    var fr={t:'fr',n:num,d:[]};
+    s.splice(start,0,fr);
+    ed.seq=num.length?fr.d:fr.n;
+    ed.i=0;relink(ed);
+  }
+  function exitSup(ed){
+    var p=ed.seq.p;
+    ed.seq=p.owner;ed.i=p.owner.indexOf(p.node)+1;
+  }
+  function newline(ed){
+    if(ed.seq!==ed.root)return;
+    ed.seq.splice(ed.i,0,{t:'nl'});ed.i++;
+  }
+  function typeChar(ed,ch){
+    if(ch==='\n'||ch==='\r')return newline(ed);
+    if(ch==='/')return insFrac(ed);
+    if(ch==='^')return insSup(ed);
+    if(ch==='*')ch='·';
+    else if(ch==='-')ch='−';
+    var p=ed.seq.p;
+    if(p&&p.slot==='s'){
+      if(/[·×÷=≈ ]/.test(ch)||((ch==='+'||ch==='−')&&ed.seq.length>0))exitSup(ed);
+    }
+    ed.seq.splice(ed.i,0,{t:'c',v:ch});ed.i++;
+  }
+  function right(ed){
+    var s=ed.seq,i=ed.i;
+    if(i<s.length){
+      var nd=s[i];
+      if(nd.t==='fr'){ed.seq=nd.n;ed.i=0;}
+      else if(nd.t==='sup'){ed.seq=nd.s;ed.i=0;}
+      else ed.i=i+1;
+      return;
+    }
+    var p=s.p;if(!p)return;
+    if(p.slot==='n'){ed.seq=p.node.d;ed.i=0;return;}
+    ed.seq=p.owner;ed.i=p.owner.indexOf(p.node)+1;
+  }
+  function left(ed){
+    var s=ed.seq,i=ed.i;
+    if(i>0){
+      var nd=s[i-1];
+      if(nd.t==='fr'){ed.seq=nd.d;ed.i=nd.d.length;}
+      else if(nd.t==='sup'){ed.seq=nd.s;ed.i=nd.s.length;}
+      else ed.i=i-1;
+      return;
+    }
+    var p=s.p;if(!p)return;
+    if(p.slot==='d'){ed.seq=p.node.n;ed.i=p.node.n.length;return;}
+    ed.seq=p.owner;ed.i=p.owner.indexOf(p.node);
+  }
+  function down(ed){var p=ed.seq.p;if(p&&p.slot==='n'){ed.seq=p.node.d;ed.i=Math.min(ed.i,p.node.d.length);}}
+  function up(ed){var p=ed.seq.p;if(p&&p.slot==='d'){ed.seq=p.node.n;ed.i=Math.min(ed.i,p.node.n.length);}}
+  function backspace(ed){
+    var s=ed.seq,i=ed.i;
+    if(i>0){
+      var pv=s[i-1];
+      if(pv.t==='c'||pv.t==='nl'){s.splice(i-1,1);ed.i=i-1;return;}
+      if(emptyNode(pv)){s.splice(i-1,1);ed.i=i-1;relink(ed);return;}
+      left(ed);return;
+    }
+    var p=s.p;if(!p)return;
+    var o=p.owner,nd=p.node,k=o.indexOf(nd);
+    if(emptyNode(nd)){o.splice(k,1);ed.seq=o;ed.i=k;relink(ed);return;}
+    if(p.slot==='d'&&!nd.d.length){
+      var num=nd.n;
+      o.splice.apply(o,[k,1].concat(num));
+      ed.seq=o;ed.i=k+num.length;relink(ed);return;
+    }
+    left(ed);
+  }
+  return {newEd:newEd,relink:relink,load:load,reset:reset,blank:blank,
+    insFrac:insFrac,insSup:insSup,typeChar:typeChar,left:left,right:right,up:up,down:down,backspace:backspace};
+})();
+
+  var CALC=[
+    {id:'a',q:'Rechne die Masse von Sirius B in Kilogramm um.',sym:'M',unit:'kg'},
+    {id:'b',q:'Rechne den Radius von Sirius B in Meter um.',sym:'R',unit:'m'},
+    {id:'c',q:'Berechne das Volumen von Sirius B.',sym:'V',unit:'m³'},
+    {id:'d',q:'Berechne die mittlere Dichte von Sirius B.',sym:'ρ',unit:'kg/m³',cmp:'ρ(Sirius B) / ρ⊕ ='},
+    {id:'e',q:'Berechne die Oberflächengravitation von Sirius B.',sym:'g',unit:'m/s²',cmp:'g(Sirius B) / g⊕ ='}
+  ];
+  var TEXTS=[
+    {id:'a',q:'Vergleiche Sirius B mit der Sonne: Wie können beide fast dieselbe Masse haben, obwohl Sirius B nur ungefähr erdgroß ist? Was erklärt, dass Sirius B so viel dichter ist als die Erde?'},
+    {id:'b',q:'Trotz der hohen berechneten Dichte und Oberflächengravitation kollabiert Sirius B nicht weiter. Warum nicht?'},
+    {id:'c',q:'Was könnte sich ändern, wenn Sirius B in seinem Doppelsternsystem weiter Materie aufnimmt? Erkläre, warum die Chandrasekhar-Grenze dabei wichtig ist.'}
+  ];
+  var REQUIRED=['calc-a-res','calc-b-res','calc-c-res','calc-d-res','calc-d-cmp','calc-e-res','calc-e-cmp','text-a','text-b','text-c'];
+  var AUFTRAG='Rechnet mit den veröffentlichten Messwerten für Sirius B. Notiert Rechenweg und Einheiten. Rundet eure Ergebnisse sinnvoll.';
+  var AUSW='Beantwortet die Fragen in ganzen Sätzen. Bezieht euch auf eure berechneten Werte.';
+  var TIPP='Eingabehilfe: Mit der Leiste oben setzt du Brüche, Hochzahlen, π und Rechenzeichen. Auf der Tastatur erzeugt „/“ einen Bruch und „^“ eine Hochzahl. Mit den Pfeilen oder „→“ verlässt du Zähler, Nenner und Hochzahl.';
+  var QUELLEN='Bond, H. E. et al. (2017), The Astrophysical Journal, 840, 70. DOI: 10.3847/1538-4357/aa6af8. | Bédard, A. et al. (2019), Monthly Notices of the Royal Astronomical Society, 484, 2711–2725. DOI: 10.1093/mnras/sty3395.';
+  var KEY='weisse-zwerge-sirius-b-v2';
+
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function $(id){return document.getElementById(id);}
+
+  /* Eingabeleiste */
+  function kb(a,html,label,cls){return '<button type="button" class="kb'+(cls?' '+cls:'')+'" data-a="'+a+'" aria-label="'+label+'">'+html+'</button>';}
+  function kch(c,label){return kb('ch:'+c,c,label||c);}
+  var TOOLBAR='<div class="kp" id="kp" role="toolbar" aria-label="Eingabehilfe für Formeln">'+
+    '<div class="kg">'+
+      kb('frac','<span class="fr"><span>▫</span><span>▫</span></span>','Bruch')+
+      kb('sup','x<sup>n</sup>','Hochzahl')+
+      kb('sq','x<sup>2</sup>','Quadrat')+
+      kb('cu','x<sup>3</sup>','hoch drei')+
+      kb('p10','10<sup>n</sup>','Zehnerpotenz')+
+      kb('x10','×10<sup>n</sup>','mal Zehnerpotenz')+
+    '</div>'+
+    '<div class="kg">'+kch('π','Pi')+kch('ρ','Rho')+kch('☉','Sonne')+kch('⊕','Erde')+'</div>'+
+    '<div class="kg">'+kch('+','plus')+kch('−','minus')+kch('·','mal Punkt')+kch('×','mal')+kch('÷','geteilt')+kch('(','Klammer auf')+kch(')','Klammer zu')+kch('=','gleich')+kch('≈','ungefähr gleich')+'</div>'+
+    '<div class="kg">'+kb('left','←','Cursor nach links','nav')+kb('right','→','Cursor nach rechts','nav')+kb('bs','⌫','Löschen','nav')+'</div>'+
+  '</div>';
+
+  /* Formel-Felder: Darstellung */
+  function sp(c){var e=document.createElement('span');e.className=c;return e;}
+  function mkCaret(){var c=sp('caret');c.setAttribute('aria-hidden','true');return c;}
+  function renderSeq(seq,host,caret,slot){
+    host._seq=seq;
+    var has=!!caret&&caret.seq===seq;
+    if(!seq.length){
+      if(has)host.appendChild(mkCaret());
+      if(slot)host.appendChild(sp('ph'));
+      return;
+    }
+    for(var i=0;i<=seq.length;i++){
+      if(has&&caret.i===i)host.appendChild(mkCaret());
+      if(i===seq.length)break;
+      var nd=seq[i],el;
+      if(nd.t==='c'){el=sp('mc');el.textContent=nd.v===' '?' ':nd.v;}
+      else if(nd.t==='nl'){el=document.createElement('br');}
+      else if(nd.t==='fr'){
+        el=sp('mfr');var n=sp('mn'),d=sp('md');
+        renderSeq(nd.n,n,caret,true);renderSeq(nd.d,d,caret,true);
+        el.appendChild(n);el.appendChild(d);
+      }else{el=sp('msup');renderSeq(nd.s,el,caret,true);}
+      el._ni=i;host.appendChild(el);
+    }
+  }
+  function mathHTML(ed){var h=document.createElement('span');renderSeq(ed.root,h,null,false);return h.innerHTML;}
+
+  /* Position aus einem Tipp bestimmen */
+  function nearest(container,ev){
+    var seq=container._seq,best=null,bd=1e9;
+    for(var k=0;k<container.children.length;k++){
+      var c=container.children[k];
+      if(c._ni===undefined||c.tagName==='BR')continue;
+      var r=c.getBoundingClientRect();
+      var dx=ev.clientX<r.left?r.left-ev.clientX:(ev.clientX>r.right?ev.clientX-r.right:0);
+      var dy=ev.clientY<r.top?r.top-ev.clientY:(ev.clientY>r.bottom?ev.clientY-r.bottom:0);
+      var d=dy*3+dx;
+      if(d<bd){bd=d;best=c;}
+    }
+    if(!best)return {seq:seq,i:seq.length};
+    var rb=best.getBoundingClientRect();
+    return {seq:seq,i:best._ni+(ev.clientX>(rb.left+rb.right)/2?1:0)};
+  }
+  function locate(view,el,ev){
+    if(el._seq)return nearest(el,ev);
+    var cur=el;
+    while(cur&&cur!==view&&!(cur.parentElement&&cur.parentElement._seq))cur=cur.parentElement;
+    if(!cur||cur===view)return nearest(view,ev);
+    if(cur.classList.contains('caret'))return null;
+    var seq=cur.parentElement._seq;
+    if(cur._ni===undefined)return {seq:seq,i:seq.length};
+    var r=cur.getBoundingClientRect();
+    return {seq:seq,i:cur._ni+(ev.clientX>(r.left+r.right)/2?1:0)};
+  }
+
+  var FIELDS={},activeField=null,onChange=function(){};
+
+  function mfHTML(id,ml,ph,label){
+    return '<div class="mf'+(ml?' ml':'')+'" id="'+id+'"><div class="mfv" data-ph="'+esc(ph)+'"></div>'+
+      '<input class="mfi" type="text" inputmode="text" aria-label="'+esc(label)+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="'+(ml?'enter':'done')+'"></div>';
+  }
+  function initMath(id,ml){
+    var root=$(id),view=root.querySelector('.mfv'),inp=root.querySelector('.mfi');
+    var ed=M.newEd(),focused=false;
+    function draw(){
+      view.textContent='';
+      renderSeq(ed.root,view,focused?{seq:ed.seq,i:ed.i}:null,false);
+      view.classList.toggle('empty',ed.root.length===0);
+    }
+    function changed(){draw();onChange();}
+    function doAct(a){
+      if(a.indexOf('ch:')===0)M.typeChar(ed,a.slice(3));
+      else switch(a){
+        case 'frac':M.insFrac(ed);break;
+        case 'sup':M.insSup(ed);break;
+        case 'sq':M.insSup(ed);M.typeChar(ed,'2');M.right(ed);break;
+        case 'cu':M.insSup(ed);M.typeChar(ed,'3');M.right(ed);break;
+        case 'p10':M.typeChar(ed,'1');M.typeChar(ed,'0');M.insSup(ed);break;
+        case 'x10':M.typeChar(ed,'×');M.typeChar(ed,'1');M.typeChar(ed,'0');M.insSup(ed);break;
+        case 'left':M.left(ed);break;
+        case 'right':M.right(ed);break;
+        case 'bs':M.backspace(ed);break;
+      }
+    }
+    var api={
+      kind:'math',ed:ed,
+      get:function(){return JSON.stringify(ed.root);},
+      set:function(s){var d=[];try{d=JSON.parse(s);}catch(e){}M.load(ed,d);draw();},
+      empty:function(){return M.blank(ed.root);},
+      reset:function(){M.reset(ed);draw();},
+      html:function(){return mathHTML(ed);},
+      act:function(a){doAct(a);inp.focus({preventScroll:true});changed();}
+    };
+    inp.addEventListener('focus',function(){focused=true;activeField=api;root.classList.add('on');draw();});
+    inp.addEventListener('blur',function(){focused=false;root.classList.remove('on');draw();});
+    function feed(){
+      var s=inp.value;inp.value='';
+      if(!s)return;
+      for(var k=0;k<s.length;k++){
+        var ch=s.charAt(k);
+        if(ch==='\n'&&!ml)continue;
+        M.typeChar(ed,ch);
+      }
+      changed();
+    }
+    inp.addEventListener('input',function(e){if(e.isComposing)return;feed();});
+    inp.addEventListener('compositionend',feed);
+    inp.addEventListener('keydown',function(e){
+      if(e.metaKey||e.ctrlKey||e.altKey)return;
+      var k=e.key,done=true;
+      if(k==='Backspace')M.backspace(ed);
+      else if(k==='ArrowLeft')M.left(ed);
+      else if(k==='ArrowRight')M.right(ed);
+      else if(k==='ArrowUp')M.up(ed);
+      else if(k==='ArrowDown')M.down(ed);
+      else if(k==='Enter'){if(ml)M.typeChar(ed,'\n');else inp.blur();}
+      else if(k==='Escape')inp.blur();
+      else done=false;
+      if(done){e.preventDefault();changed();}
+    });
+    inp.addEventListener('beforeinput',function(e){
+      if(e.inputType==='deleteContentBackward'&&!inp.value){e.preventDefault();M.backspace(ed);changed();}
+    });
+    root.addEventListener('click',function(ev){
+      var els=document.elementsFromPoint(ev.clientX,ev.clientY),target=view;
+      for(var k=0;k<els.length;k++){if(view.contains(els[k])){target=els[k];break;}}
+      var pos=locate(view,target,ev);
+      if(pos){ed.seq=pos.seq;ed.i=pos.i;}
+      if(document.activeElement!==inp)inp.focus({preventScroll:true});
+      changed();
+    });
+    draw();
+    FIELDS[id]=api;
+  }
+
+  /* Aufgaben aufbauen */
+  function calcHTML(t){
+    return '<section class="task" aria-labelledby="q-c'+t.id+'"><div class="tl">'+t.id+')</div><div class="tb">'+
+      '<p class="q" id="q-c'+t.id+'">'+t.q+'</p>'+
+      '<div class="way"><span class="lbl">Rechenweg</span>'+mfHTML('calc-'+t.id+'-way',true,'Rechenweg mit Einheiten notieren','Rechenweg '+t.id)+'</div>'+
+      '<div class="res"><span class="sym">'+t.sym+' =</span>'+mfHTML('calc-'+t.id+'-res',false,'Ergebnis','Ergebnis '+t.sym+' in '+t.unit)+'<span class="unit">'+t.unit+'</span></div>'+
+      (t.cmp?'<div class="res cmp"><span class="sym wide">Vergleich mit der Erde: '+t.cmp+'</span>'+mfHTML('calc-'+t.id+'-cmp',false,'Ergebnis','Vergleich mit der Erde')+'</div>':'')+
+      '</div></section>';
+  }
+  function textHTML(t){
+    return '<section class="task answer" aria-labelledby="q-t'+t.id+'"><div class="tl">'+t.id+')</div><div class="tb">'+
+      '<p class="q" id="q-t'+t.id+'">'+t.q+'</p>'+
+      '<textarea id="text-'+t.id+'" lang="de" placeholder="Antwort in ganzen Sätzen"></textarea></div></section>';
+  }
+  var main=$('main');
+  main.innerHTML=TOOLBAR+
+    '<section class="panel intro"><h2>Arbeitsauftrag</h2><p>'+AUFTRAG+'</p><p>'+TIPP+'</p></section>'+
+    '<h2 class="sec">1. Vorbetrachtungen und Berechnungen</h2>'+CALC.map(calcHTML).join('')+
+    '<h2 class="sec">2. Auswertung</h2><p class="note">'+AUSW+'</p>'+TEXTS.map(textHTML).join('')+
+    '<p class="src"><strong>Quellen zu den Messwerten</strong><br>'+QUELLEN+'</p>';
+
+  CALC.forEach(function(t){
+    initMath('calc-'+t.id+'-way',true);
+    initMath('calc-'+t.id+'-res',false);
+    if(t.cmp)initMath('calc-'+t.id+'-cmp',false);
+  });
+  function plain(id){
+    var el=$(id);
+    FIELDS[id]={kind:'plain',
+      get:function(){return el.value;},
+      set:function(v){el.value=v;},
+      empty:function(){return el.value.trim()==='';},
+      reset:function(){el.value='';}};
+  }
+  plain('name');
+  TEXTS.forEach(function(t){plain('text-'+t.id);});
+  function val(id){return FIELDS[id].get().trim();}
+
+  /* Zwischenspeicher im Browser (nur Komfort) */
+  function load(){
+    try{
+      var s=JSON.parse(localStorage.getItem(KEY)||'{}');
+      Object.keys(FIELDS).forEach(function(id){if(typeof s[id]==='string')FIELDS[id].set(s[id]);});
+    }catch(e){}
+  }
+  var timer=null;
+  function save(){
+    clearTimeout(timer);
+    timer=setTimeout(function(){
+      try{var o={};Object.keys(FIELDS).forEach(function(id){o[id]=FIELDS[id].get();});localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}
+    },300);
+  }
+  function grow(el){
+    el.style.height='auto';
+    el.style.height=Math.max(150,el.scrollHeight+2)+'px';
+  }
+  function progress(){
+    var n=REQUIRED.filter(function(id){return !FIELDS[id].empty();}).length;
+    $('progText').textContent=n+' von '+REQUIRED.length+' ausgefüllt';
+    $('progBar').style.width=(n/REQUIRED.length*100)+'%';
+  }
+  onChange=function(){progress();save();};
+  load();
+  document.querySelectorAll('textarea').forEach(grow);
+  progress();
+  document.addEventListener('input',function(ev){
+    var t=ev.target;
+    if(t.tagName==='TEXTAREA')grow(t);
+    if(t.classList&&t.classList.contains('mfi'))return;
+    progress();save();
+  });
+
+  /* Eingabeleiste bedienen, ohne das Feld zu verlassen */
+  var kp=$('kp');
+  function keep(e){if(e.target.closest('.kb'))e.preventDefault();}
+  kp.addEventListener('pointerdown',keep);
+  kp.addEventListener('mousedown',keep);
+  kp.addEventListener('click',function(e){
+    var b=e.target.closest('.kb');
+    if(!b)return;
+    if(!activeField){toast('Tippe zuerst in ein Eingabefeld.');return;}
+    activeField.act(b.getAttribute('data-a'));
+  });
+
+  /* Mitteilung */
+  var toastT=null;
+  function toast(msg){
+    var el=$('toast');el.textContent=msg;el.classList.add('on');
+    clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('on');},3600);
+  }
+
+  /* Alles löschen mit Bestätigung auf der Seite */
+  var resetBtn=$('resetBtn'),resetT=null;
+  resetBtn.addEventListener('click',function(){
+    if(!resetBtn.classList.contains('danger')){
+      resetBtn.classList.add('danger');resetBtn.textContent='Wirklich alles löschen?';
+      resetT=setTimeout(function(){resetBtn.classList.remove('danger');resetBtn.textContent='Alles löschen';},4000);
+      return;
+    }
+    clearTimeout(resetT);
+    Object.keys(FIELDS).forEach(function(id){FIELDS[id].reset();});
+    document.querySelectorAll('textarea').forEach(grow);
+    try{localStorage.removeItem(KEY);}catch(e){}
+    progress();
+    resetBtn.classList.remove('danger');resetBtn.textContent='Alles löschen';
+    toast('Arbeitsblatt geleert.');
+  });
+
+  /* PDF-Vorlage */
+  function ln(id,extra){return '<span class="ln" style="'+(extra||'')+'">'+FIELDS[id].html()+'</span>';}
+  function pdfBlocks(){
+    var today=new Date().toLocaleDateString('de-DE');
+    var b=[];
+    b.push('<div class="pb"><h1>Weiße Zwerge</h1><p class="sub">Arbeitsblatt · Sirius B: Masse, Größe und Dichte</p>'+
+      '<div class="meta"><span><b>Name:</b> '+(esc(val('name'))||'________________')+'</span><span><b>Datum:</b> '+today+'</span></div>'+
+      '<div class="rule"></div><h3>Arbeitsauftrag</h3><p>'+AUFTRAG+'</p></div>');
+    b.push('<div class="pb"><h3>Benötigte Formeln</h3><div class="fm">'+
+      '<span>V = <span class="fr"><span>4</span><span>3</span></span> π R³</span>'+
+      '<span>ρ = <span class="fr"><span>M</span><span>V</span></span></span>'+
+      '<span>g = <span class="fr"><span>G M</span><span>R²</span></span></span></div>'+
+      '<h3>Beobachtungsdaten und Vergleichswerte</h3><table><thead><tr><th>Größe</th><th>Symbol/Formelzeichen</th><th>Wert</th></tr></thead><tbody>'+
+      '<tr><td>Masse von Sirius B</td><td>M</td><td>1,018 Sonnenmassen (M☉)</td></tr>'+
+      '<tr><td>Radius von Sirius B</td><td>R</td><td>0,008098 Sonnenradien (R☉)</td></tr>'+
+      '<tr><td>Sonnenmasse</td><td>M☉</td><td>1,9885 × 10³⁰ kg</td></tr>'+
+      '<tr><td>Sonnenradius</td><td>R☉</td><td>6,957 × 10⁸ m</td></tr>'+
+      '<tr><td>Erdradius</td><td>R⊕</td><td>6,371 × 10⁶ m</td></tr>'+
+      '<tr><td>Mittlere Erddichte</td><td>ρ⊕</td><td>5,51 × 10³ kg/m³</td></tr>'+
+      '<tr><td>Erdbeschleunigung</td><td>g⊕</td><td>9,81 m/s²</td></tr>'+
+      '<tr><td>Gravitationskonstante</td><td>G</td><td>6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</td></tr>'+
+      '</tbody></table></div>');
+    CALC.forEach(function(t,i){
+      var h=(i===0?'<h2>1. Vorbetrachtungen und Berechnungen</h2>':'');
+      b.push('<div class="pb">'+h+'<p class="tq"><i>'+t.id+')</i>'+t.q+'</p>'+
+        '<div class="way"><small>Rechenweg</small>'+FIELDS['calc-'+t.id+'-way'].html()+'</div>'+
+        '<div class="rl"><span class="s">'+t.sym+' =</span> '+ln('calc-'+t.id+'-res')+' '+t.unit+'</div>'+
+        (t.cmp?'<div class="rl">Vergleich mit der Erde: '+t.cmp+' '+ln('calc-'+t.id+'-cmp','min-width:160px')+'</div>':'')+
+        '</div>');
+    });
+    TEXTS.forEach(function(t,i){
+      var h=(i===0?'<h2>2. Auswertung</h2><p>'+AUSW+'</p>':'');
+      b.push('<div class="pb">'+h+'<p class="tq"><i>'+t.id+')</i>'+t.q+'</p><div class="tx">'+esc(val('text-'+t.id))+'</div></div>');
+    });
+    b.push('<div class="pb"><p class="src"><b>Quellen zu den Messwerten</b><br>'+QUELLEN+'</p></div>');
+    return b;
+  }
+
+  async function makePdf(){
+    var root=$('pdfRoot');
+    root.innerHTML=pdfBlocks().join('');
+    if(document.fonts&&document.fonts.ready)await document.fonts.ready;
+    var JsPDF=window.jspdf.jsPDF;
+    var doc=new JsPDF({unit:'mm',format:'a4'});
+    var M0=14,W=182,PH=297,gap=2,y=M0;
+    var blocks=root.querySelectorAll('.pb');
+    for(var i=0;i<blocks.length;i++){
+      var c=await html2canvas(blocks[i],{scale:2,backgroundColor:'#ffffff',logging:false,useCORS:true,
+        onclone:function(d){var r=d.getElementById('pdfRoot');if(r){r.style.left='0';}}});
+      var w=W,h=c.height/c.width*W,maxH=PH-2*M0;
+      if(h>maxH){w=W*maxH/h;h=maxH;}
+      if(y+h>PH-M0&&y>M0){doc.addPage();y=M0;}
+      doc.addImage(c.toDataURL('image/jpeg',0.93),'JPEG',M0,y,w,h);
+      y+=h+gap;
+    }
+    var total=doc.getNumberOfPages();
+    doc.setFontSize(9);doc.setTextColor(120,128,145);
+    for(var p=1;p<=total;p++){doc.setPage(p);doc.text('Weisse Zwerge · Arbeitsblatt Sirius B · Seite '+p+' von '+total,M0,PH-6);}
+    root.innerHTML='';
+    return doc.output('blob');
+  }
+
+  /* Download-Fähigkeit */
+  var downloads=null,pdfBtn=$('pdfBtn'),busy=false;
+  if(window.claude&&window.claude.use){
+    window.claude.use('downloads').then(function(d){
+      downloads=d;
+      if(!d){pdfBtn.disabled=true;pdfBtn.title='Speichern ist in dieser Ansicht nicht verfügbar.';}
+    }).catch(function(){pdfBtn.disabled=true;});
+  }
+  pdfBtn.addEventListener('click',async function(){
+    if(busy)return;
+    if(!downloads){toast('Speichern ist in dieser Ansicht nicht verfügbar.');return;}
+    if(!window.html2canvas||!window.jspdf){toast('PDF-Werkzeug konnte nicht geladen werden. Bitte Seite neu laden.');return;}
+    busy=true;var old=pdfBtn.textContent;pdfBtn.disabled=true;pdfBtn.textContent='PDF wird erstellt …';
+    try{
+      var blob=await makePdf();
+      var nm=val('name').replace(/[^\wäöüÄÖÜß-]+/g,'-').replace(/^-+|-+$/g,'');
+      await downloads.save({filename:'Weisse-Zwerge-Arbeitsblatt'+(nm?'-'+nm:'')+'.pdf',data:blob});
+      toast('PDF gespeichert.');
+    }catch(e){
+      var code=e&&e.code;
+      if(code==='declined')toast('Speichern abgebrochen.');
+      else if(code==='rate_limited')toast('Bitte einen Moment warten und noch einmal tippen.');
+      else toast('Das PDF konnte nicht gespeichert werden.');
+    }finally{
+      busy=false;pdfBtn.disabled=!downloads;pdfBtn.textContent=old;
+    }
+  });
+})();
+</script>
+
+</body></html>
