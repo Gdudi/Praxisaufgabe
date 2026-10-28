@@ -143,6 +143,310 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:va
   .who input{width:150px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.caret{animation:none}}
+
+
+
+
+
+/* =========================================
+   iPad & große Touch-Displays
+   ========================================= */
+
+/* Stabileres Layout auf großen Viewports */
+html {
+  min-height: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+  min-height: 100vh;
+}
+
+/* Mehr Platz für Inhalt und Aufgaben */
+@media (min-width: 861px) {
+  body {
+    padding-left: max(24px, env(safe-area-inset-left, 0px));
+    padding-right: max(24px, env(safe-area-inset-right, 0px));
+  }
+
+  .top {
+    gap: 16px 24px;
+    padding-block: 18px;
+  }
+
+  .title h1 {
+    font-size: clamp(28px, 2.2vw, 36px);
+  }
+
+  .title p {
+    font-size: 15px;
+  }
+
+  .layout {
+    grid-template-columns:
+      minmax(340px, 0.78fr)
+      minmax(0, 1.8fr);
+    gap: 24px;
+    padding-block: 24px;
+  }
+
+  aside,
+  main {
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  aside {
+    gap: 18px;
+  }
+
+  main {
+    gap: 18px;
+    padding: 0 2px 32px 0;
+  }
+
+  .panel {
+    padding: 20px 22px;
+    border-radius: 16px;
+  }
+
+  .panel h2 {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .formulas {
+    gap: 10px;
+    font-size: 18px;
+  }
+
+  table.data {
+    font-size: 14px;
+  }
+
+  table.data th {
+    font-size: 11px;
+  }
+
+  table.data td {
+    padding-block: 10px;
+  }
+
+  .sec {
+    font-size: clamp(24px, 1.8vw, 30px);
+    margin-top: 14px;
+  }
+
+  .task {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    padding: 22px 24px;
+    border-radius: 16px;
+  }
+
+  .tl {
+    font-size: 24px;
+  }
+
+  .tb {
+    gap: 16px;
+  }
+
+  .q {
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .mfv {
+    min-height: 54px;
+    padding: 12px 16px;
+    font-size: 19px;
+  }
+
+  .mf.ml .mfv {
+    min-height: 112px;
+  }
+
+  .answer textarea {
+    min-height: 180px;
+    font-size: 16px;
+  }
+
+  .kp {
+    gap: 10px 16px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .kg {
+    gap: 8px;
+  }
+
+  .kb {
+    min-width: 48px;
+    height: 48px;
+    padding-inline: 12px;
+    border-radius: 10px;
+  }
+
+  .btn {
+    min-height: 48px;
+  }
+}
+
+/* Große iPads im Querformat */
+@media (min-width: 1024px) and (orientation: landscape) {
+  .layout {
+    grid-template-columns:
+      minmax(350px, 30%)
+      minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  aside,
+  main {
+    min-height: 0;
+  }
+
+  /* Formeleingabe bleibt im Aufgabenbereich erreichbar */
+  .kp {
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 8px 20px rgba(10, 20, 40, 0.09);
+  }
+}
+
+/* Sehr breite Displays, etwa iPad Pro oder Stage Manager */
+@media (min-width: 1366px) {
+  body {
+    padding-inline: max(32px, env(safe-area-inset-left, 0px));
+  }
+
+  .layout {
+    grid-template-columns:
+      minmax(370px, 420px)
+      minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .task {
+    padding: 24px 28px;
+  }
+
+  .tb {
+    max-width: 1100px;
+  }
+
+  .res .mf {
+    max-width: 460px;
+  }
+}
+
+/* iPad im Hochformat: einspaltiger Lesefluss */
+@media (min-width: 600px) and (max-width: 1023px) {
+  html,
+  body {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .top {
+    gap: 14px 20px;
+    padding-block: 16px;
+  }
+
+  .title {
+    flex: 1 1 300px;
+  }
+
+  .title h1 {
+    font-size: 32px;
+  }
+
+  .who input {
+    width: min(220px, 25vw);
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-block: 20px;
+  }
+
+  aside,
+  main {
+    overflow: visible;
+  }
+
+  aside {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 16px;
+    margin: 0;
+  }
+
+  .panel {
+    padding: 20px;
+  }
+
+  .kp {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .task {
+    padding: 20px 24px;
+  }
+}
+
+/* Touch-Bedienung ohne Maus */
+@media (pointer: coarse) {
+  .btn,
+  .kb {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .btn {
+    padding-inline: 20px;
+  }
+
+  .mf,
+  textarea,
+  input {
+    scroll-margin-block: 100px;
+  }
+
+  .kb:active,
+  .btn:active:not(:disabled) {
+    background-color: var(--accent-soft);
+    border-color: var(--accent);
+  }
+}
+
+/* Dynamische Höhe und Safe Areas bei iPadOS */
+@supports (height: 100dvh) {
+  @media (min-width: 861px) {
+    html,
+    body {
+      height: 100dvh;
+    }
+
+    .layout {
+      min-height: 0;
+    }
+  }
+}
+
+
+  
+
+  
 </style>
 
 
