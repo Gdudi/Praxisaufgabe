@@ -144,6 +144,134 @@ textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:va
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.caret{animation:none}}
 
+
+
+
+/* =========================================================
+   iPadOS / Safari: Scrollen und Bildschirmtastatur
+   ========================================================= */
+
+:root {
+  --kb-inner-space: 0px;
+  --kb-page-space: 0px;
+}
+
+html {
+  scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
+  scroll-padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+}
+
+body {
+  padding-bottom: var(--kb-page-space, 0px);
+  overscroll-behavior-y: contain;
+}
+
+aside,
+main {
+  overscroll-behavior: contain;
+}
+
+main {
+  scroll-padding-top: 190px;
+  scroll-padding-bottom: 30vh;
+  padding-bottom: calc(
+    24px + var(--kb-inner-space, 0px) +
+    env(safe-area-inset-bottom, 0px)
+  );
+}
+
+.mf,
+textarea,
+.who input {
+  scroll-margin-top: 190px;
+  scroll-margin-bottom: 280px;
+}
+
+.kp {
+  top: calc(env(safe-area-inset-top, 0px) + 8px);
+}
+
+/* Touch-Geräte: Formelleiste begrenzen und intern scrollbar machen */
+@media (any-pointer: coarse) {
+  .kp {
+    max-height: 30vh;
+    max-height: min(30dvh, 190px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* iPad und andere große Touch-Displays im Querformat */
+@media (min-width: 861px) and
+       (any-pointer: coarse) and
+       (orientation: landscape) {
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  @supports (height: 100dvh) {
+    html,
+    body {
+      height: 100dvh;
+    }
+  }
+
+  .layout {
+    grid-template-columns: minmax(290px, 34vw) minmax(0, 1fr);
+    gap: 16px;
+    padding-block: 12px;
+  }
+
+  .kp {
+    max-height: 30vh;
+    max-height: min(30dvh, 190px);
+  }
+}
+
+/* Hochformat: normaler Seitenscroll statt verschachtelter Scrollflächen */
+@media (any-pointer: coarse) and (orientation: portrait) {
+  html,
+  body {
+    height: auto;
+    min-height: 100%;
+  }
+
+  .layout {
+    display: block;
+    flex: none;
+    min-height: auto;
+    padding-block: 12px;
+  }
+
+  aside,
+  main {
+    overflow: visible;
+    min-height: auto;
+  }
+
+  aside {
+    margin-bottom: 14px;
+  }
+
+  main {
+    padding-bottom: calc(
+      32px + var(--kb-inner-space, 0px) +
+      env(safe-area-inset-bottom, 0px)
+    );
+  }
+
+  .kp {
+    top: calc(env(safe-area-inset-top, 0px) + 8px);
+    max-height: 28vh;
+    max-height: min(28dvh, 180px);
+  }
+}
+
+
+
+
   
 </style>
 
