@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sirius B – Digitales Rechenlabor</title>
+<style>
+:root{
+  --bg:#08111f;--panel:#101d30;--panel2:#14243a;--line:#29405c;
+  --text:#edf4ff;--muted:#a8bad1;--accent:#83d7ff;--accent2:#c2a8ff;
+  --good:#8ee0b0;--bad:#ffb4ad;--gold:#ffd98a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 85% 0%,#183452 0,transparent 35%),var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:34px max(22px,calc((100vw - 1120px)/2)) 26px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;margin:.45rem 0 .8rem;letter-spacing:-.04em}
+header p{max-width:720px;color:var(--muted);margin:0}
+main{max-width:1120px;margin:0 auto;padding:24px 20px 70px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 22px}
+nav button,.btn{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--panel);color:var(--text);cursor:pointer;font:inherit}
+nav button[aria-current="page"]{border-color:var(--accent);background:#16334b;color:#fff}
+section{display:none;animation:fade .2s ease}section.active{display:block}
+@keyframes fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{background:linear-gradient(145deg,var(--panel),#0d192a);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
+.span-12{grid-column:span 12}.span-8{grid-column:span 8}.span-7{grid-column:span 7}.span-6{grid-column:span 6}.span-5{grid-column:span 5}.span-4{grid-column:span 4}
+h2{font-size:1.55rem;letter-spacing:-.02em;margin:0 0 10px}
+h3{font-size:1.06rem;margin:0 0 8px}
+p{margin:.5rem 0 1rem}
+.muted{color:var(--muted)}.small{font-size:.88rem;color:var(--muted)}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th,.data-table td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.data-table th{color:var(--muted);font-weight:600;font-size:.88rem}
+code,.formula{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#081421;border:1px solid #233b55;border-radius:8px;padding:3px 7px;color:#d8eaff}
+.kpi{font-size:1.35rem;font-weight:750;color:var(--accent);overflow-wrap:anywhere}
+label{display:block;font-size:.9rem;color:var(--muted);margin:10px 0 5px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:#091625;color:var(--text);border-radius:9px;padding:11px 12px;font:inherit}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+textarea{min-height:112px;resize:vertical}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.btn.primary{background:var(--accent);color:#071321;border-color:var(--accent);font-weight:750}
+.btn.secondary{background:transparent}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.feedback{margin-top:10px;padding:10px 12px;border-radius:9px;display:none}
+.feedback.show{display:block}.feedback.good{background:#103324;border:1px solid #2d7850;color:var(--good)}.feedback.bad{background:#3a1e25;border:1px solid #85414a;color:var(--bad)}
+details{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+summary{cursor:pointer;color:var(--accent);font-weight:650}
+.visuals{display:grid;grid-template-columns:repeat(3,1fr);align-items:end;gap:14px;margin:20px 0 10px}
+.planet{text-align:center}.orb{margin:0 auto 10px;border-radius:50%;background:radial-gradient(circle at 30% 28%,#fff,#a8dfff 26%,#4d83b7 63%,#1b3156 100%);box-shadow:0 0 35px #81d5ff35}
+.orb.sun{background:radial-gradient(circle at 30% 30%,#fff3be,#ffc65f 40%,#bf7134 75%,#683c37)}
+.orb.earth{background:radial-gradient(circle at 30% 25%,#b4e5ff,#2c78b7 40%,#1e493d 67%,#12243b)}
+.orb.sirius{background:radial-gradient(circle at 30% 30%,#fff,#e4f4ff 40%,#99b9d8 75%,#526d91);box-shadow:0 0 30px #d9efff4d}
+.legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.88rem}
+.barrow{display:grid;grid-template-columns:100px 1fr;gap:10px;align-items:center;margin:12px 0}
+.bar{height:13px;border-radius:20px;background:#23364d;overflow:hidden}.bar>span{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.callout{border-left:3px solid var(--gold);padding:10px 14px;background:#302a1d;border-radius:0 10px 10px 0;color:#ffe9b8}
+footer{border-top:1px solid var(--line);margin-top:28px;padding-top:18px;color:var(--muted);font-size:.85rem}
+.progress{height:5px;background:#203148;border-radius:9px;margin:20px 0 0;overflow:hidden}.progress span{display:block;height:100%;width:20%;background:var(--accent);transition:width .2s}
+@media(max-width:760px){.span-8,.span-7,.span-6,.span-5,.span-4{grid-column:span 12}.field-grid{grid-template-columns:1fr}.visuals{gap:6px}.orb{max-width:100%}.data-table{font-size:.9rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Astrophysik · Digitales Arbeitslabor</div>
+  <h1>Sirius B:<br>Masse, Größe und Dichte</h1>
+  <p>Untersuche einen weißen Zwerg mit veröffentlichten Messwerten. Rechne selbst, prüfe deine Ergebnisse und leite daraus ab, was Sirius B so außergewöhnlich macht.</p>
+  <div class="progress" aria-label="Fortschritt"><span id="progressBar"></span></div>
+</header>
+<main>
+<nav aria-label="Arbeitsbereiche">
+  <button aria-current="page" data-tab="daten">01 · Messdaten</button>
+  <button data-tab="rechnen">02 · Rechenlabor</button>
+  <button data-tab="vergleich">03 · Vergleich</button>
+  <button data-tab="physik">04 · Physik verstehen</button>
+  <button data-tab="protokoll">05 · Auswertung</button>
+</nav>
+
+<section id="daten" class="active">
+ <div class="grid">
+  <article class="card span-7">
+   <h2>Dein Untersuchungsobjekt</h2>
+   <p>Sirius B ist ein weißer Zwerg und Begleiter des Sterns Sirius A. Nutze die veröffentlichten Messwerte, um seine physikalischen Eigenschaften zu berechnen.</p>
+   <table class="data-table">
+    <thead><tr><th>Größe</th><th>Symbol</th><th>Wert</th></tr></thead>
+    <tbody>
+     <tr><td>Masse von Sirius B</td><td><i>M</i></td><td>1,018 M☉</td></tr>
+     <tr><td>Radius von Sirius B</td><td><i>R</i></td><td>0,008098 R☉</td></tr>
+     <tr><td>Sonnenmasse</td><td>M☉</td><td>1,9885 × 10³⁰ kg</td></tr>
+     <tr><td>Sonnenradius</td><td>R☉</td><td>6,957 × 10⁸ m</td></tr>
+     <tr><td>Erdradius</td><td>R⊕</td><td>6,371 × 10⁶ m</td></tr>
+     <tr><td>Mittlere Erddichte</td><td>ρ⊕</td><td>5,51 × 10³ kg/m³</td></tr>
+     <tr><td>Erdbeschleunigung</td><td>g⊕</td><td>9,81 m/s²</td></tr>
+     <tr><td>Gravitationskonstante</td><td>G</td><td>6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</td></tr>
+    </tbody>
+   </table>
+  </article>
+  <aside class="card span-5">
+   <h3>Arbeitsweise</h3>
+   <ol>
+    <li>Notiere den Rechenweg mit Einheiten.</li>
+    <li>Runde Ergebnisse sinnvoll.</li>
+    <li>Prüfe deine Eingaben erst nach dem eigenen Rechnen.</li>
+    <li>Beziehe dich in der Auswertung auf deine berechneten Werte.</li>
+   </ol>
+   <div class="callout"><strong>Hinweis</strong><br>Die Ergebnisprüfung akzeptiert Rundungsabweichungen. Sie ersetzt nicht den dokumentierten Rechenweg.</div>
+   <details><summary>Quellen zu den Messwerten</summary>
+    <p class="small">Bond, H. E. et al. (2017), <i>The Astrophysical Journal</i>, 840, 70. DOI: 10.3847/1538-4357/aa6af8.</p>
+    <p class="small">Bédard, A. et al. (2019), <i>Monthly Notices of the Royal Astronomical Society</i>, 484, 2711–2725. DOI: 10.1093/mnras/sty3395.</p>
+   </details>
+  </aside>
+  <div class="card span-12">
+   <h3>Leitfrage</h3>
+   <p class="kpi">Wie kann Sirius B fast die Sonnenmasse besitzen und trotzdem ungefähr erdgroß sein?</p>
+   <p class="muted">Arbeite dich durch die Berechnungen und nutze die Ergebnisse, um die Leitfrage am Ende wissenschaftlich zu beantworten.</p>
+   <div class="actions"><button class="btn primary" data-go="rechnen">Zum Rechenlabor →</button></div>
+  </div>
+ </div>
+</section>
+
+<section id="rechnen">
+ <div class="grid">
+  <div class="card span-12">
+   <h2>Rechenlabor</h2>
+   <p class="muted">Trage deine berechneten Ergebnisse ein. Nutze wissenschaftliche Schreibweise, zum Beispiel <code>2.02e30</code> für 2,02 × 10³⁰. Die Formeln lassen sich bei Bedarf aufklappen.</p>
+  </div>
+  <article class="card span-6">
+   <h3>1a · Masse in Kilogramm</h3>
+   <div class="formula">M = 1,018 · M☉</div>
+   <label for="mass">Dein Ergebnis M (kg)</label><input id="mass" inputmode="decimal" placeholder="z. B. 2.02e30">
+   <details><summary>Formel und Hinweis</summary><p>Masse von Sirius B mit der Sonnenmasse multiplizieren. Einheit: kg.</p></details>
+   <div id="fb-mass" class="feedback" role="status"></div>
+   <div class="actions"><button class="btn primary" onclick="check('mass')">Ergebnis prüfen</button></div>
+  </article>
+  <article class="card span-6">
+   <h3>1b · Radius in Metern</h3>
+   <div class="formula">R = 0,008098 · R☉</div>
+   <label for="radius">Dein Ergebnis R (m)</label><input id="radius" inputmode="decimal" placeholder="z. B. 5.63e6">
+   <details><summary>Formel und Hinweis</summary><p>Radius von Sirius B mit dem Sonnenradius multiplizieren. Einheit: m.</p></details>
+   <div id="fb-radius" class="feedback" role="status"></div>
+   <div class="actions"><button class="btn primary" onclick="check('radius')">Ergebnis prüfen</button></div>
+  </article>
+  <article class="card span-6">
+   <h3>1c · Volumen</h3>
+   <div class="formula">V = ⁴⁄₃ · π · R³</div>
+   <label for="volume">Dein Ergebnis V (m³)</label><input id="volume" inputmode="decimal" placeholder="Ergebnis in m³">
+   <details><summary>Formel und Hinweis</summary><p>Setze den Radius in Metern ein. Achte darauf, den gesamten Radius zu potenzieren, nicht nur den Zahlenwert.</p></details>
+   <div id="fb-volume" class="feedback" role="status"></div>
+   <div class="actions"><button class="btn primary" onclick="check('volume')">Ergebnis prüfen</button></div>
+  </article>
+  <article class="card span-6">
+   <h3>1d · Mittlere Dichte</h3>
+   <div class="formula">ρ = M / V</div>
+   <label for="density">Dein Ergebnis ρ (kg/m³)</label><input id="density" inputmode="decimal" placeholder="Ergebnis in kg/m³">
+   <label for="densityRatio">Verhältnis ρ(Sirius B) / ρ⊕</label><input id="densityRatio" inputmode="decimal" placeholder="Faktor gegenüber der Erde">
+   <details><summary>Formel und Hinweis</summary><p>Dichte ist Masse geteilt durch Volumen. Vergleiche anschließend mit 5,51 × 10³ kg/m³.</p></details>
+   <div id="fb-density" class="feedback" role="status"></div>
+   <div class="actions"><button class="btn primary" onclick="check('density')">Ergebnisse prüfen</button></div>
+  </article>
+  <article class="card span-12">
+   <h3>1e · Oberflächengravitation</h3>
+   <div class="formula">g = G · M / R²</div>
+   <div class="field-grid">
+    <div><label for="gravity">Dein Ergebnis g (m/s²)</label><input id="gravity" inputmode="decimal" placeholder="Ergebnis in m/s²"></div>
+    <div><label for="gravityRatio">Verhältnis g(Sirius B) / g⊕</label><input id="gravityRatio" inputmode="decimal" placeholder="Faktor gegenüber der Erde"></div>
+   </div>
+   <details><summary>Formel und Hinweis</summary><p>Verwende M in kg, R in m und G = 6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻². Der Radius wird quadriert.</p></details>
+   <div id="fb-gravity" class="feedback" role="status"></div>
+   <div class="actions"><button class="btn primary" onclick="check('gravity')">Ergebnisse prüfen</button><button class="btn secondary" onclick="showAnswers()">Kontrollwerte anzeigen</button></div>
+   <div id="answers" class="feedback"></div>
+  </article>
+ </div>
+</section>
+
+<section id="vergleich">
+ <div class="grid">
+  <div class="card span-12">
+   <h2>Größenordnung verstehen</h2>
+   <p>Die Darstellung verdeutlicht die Größenverhältnisse. Die Kugeln sind schematisch; für den direkten Radiusvergleich werden die relativen Radien verwendet.</p>
+   <div class="visuals">
+    <div class="planet"><div class="orb earth" style="width:64px;height:64px"></div><strong>Erde</strong><div class="small">Radius: 6,371 × 10⁶ m</div></div>
+    <div class="planet"><div class="orb sirius" style="width:57px;height:57px"></div><strong>Sirius B</strong><div class="small">Radius: ca. 5,63 × 10⁶ m</div></div>
+    <div class="planet"><div class="orb sun" style="width:150px;height:150px"></div><strong>Sonne</strong><div class="small">Radius: 6,957 × 10⁸ m</div></div>
+   </div>
+   <div class="callout">Sirius B besitzt etwa 1,018 Sonnenmassen, sein Radius beträgt aber nur rund 0,81 % des Sonnenradius. Das erklärt, warum seine mittlere Dichte sehr hoch ist.</div>
+  </div>
+  <article class="card span-6">
+   <h3>Masse im Vergleich</h3>
+   <div class="barrow"><span>Sonne</span><div class="bar"><span style="width:98.2%"></span></div></div>
+   <div class="barrow"><span>Sirius B</span><div class="bar"><span style="width:100%"></span></div></div>
+   <p class="small">Beide Balken sind nahezu gleich lang, weil die Masse von Sirius B 1,018 Sonnenmassen beträgt.</p>
+  </article>
+  <article class="card span-6">
+   <h3>Radius im Vergleich</h3>
+   <div class="barrow"><span>Sonne</span><div class="bar"><span style="width:100%"></span></div></div>
+   <div class="barrow"><span>Sirius B</span><div class="bar"><span style="width:0.81%;min-width:4px"></span></div></div>
+   <p class="small">Der Radius von Sirius B beträgt nur 0,008098 Sonnenradien.</p>
+  </article>
+  <div class="card span-12">
+   <h3>Denke weiter</h3>
+   <p>Wie wirken sich eine große Masse und ein kleiner Radius auf Dichte und Oberflächengravitation aus?</p>
+   <textarea id="compareNote" placeholder="Formuliere deine Beobachtung in eigenen Worten …"></textarea>
+  </div>
+ </div>
+</section>
+
+<section id="physik">
+ <div class="grid">
+  <div class="card span-12">
+   <h2>Warum bleibt Sirius B stabil?</h2>
+   <p>Die Rechnung zeigt, dass Sirius B eine sehr hohe Dichte und Oberflächengravitation besitzt. Daraus folgt die Frage: Warum zieht sich der Sternrest nicht immer weiter zusammen?</p>
+  </div>
+  <article class="card span-6">
+   <h3>Gravitation</h3>
+   <p>Die Gravitation zieht Materie nach innen. Bei einem kompakten Objekt ist die Wirkung an der Oberfläche besonders stark.</p>
+   <div class="formula">g = G · M / R²</div>
+  </article>
+  <article class="card span-6">
+   <h3>Entartungsdruck</h3>
+   <p>Im weißen Zwerg befinden sich Elektronen in einem stark komprimierten Zustand. Aufgrund des Pauli-Prinzips können Elektronen nicht beliebig denselben Quantenzustand einnehmen. Der quantenmechanische Entartungsdruck wirkt einer weiteren Kompression entgegen.</p>
+  </article>
+  <div class="card span-12">
+   <h3>Aufgabe 2b · Erkläre den Zusammenhang</h3>
+   <p>Erkläre in eigenen Worten, warum Sirius B trotz hoher Dichte und Oberflächengravitation nicht einfach weiter kollabiert.</p>
+   <textarea id="stability" placeholder="Beziehe Gravitation, Elektronen und Entartungsdruck in deine Erklärung ein …"></textarea>
+   <details><summary>Hinweise anzeigen</summary>
+    <ul><li>Welche Wirkung hat die Gravitation?</li><li>Was begrenzt die möglichen Quantenzustände der Elektronen?</li><li>Wie wirkt der Entartungsdruck der Kompression entgegen?</li></ul>
+   </details>
+  </div>
+  <div class="card span-12">
+   <h3>Aufgabe 2c · Materieaufnahme und Chandrasekhar-Grenze</h3>
+   <p>Was könnte sich ändern, wenn Sirius B in seinem Doppelsternsystem weiter Materie aufnimmt? Erkläre, warum die Chandrasekhar-Grenze dabei wichtig ist.</p>
+   <textarea id="chandra" placeholder="Formuliere eine begründete Erklärung …"></textarea>
+   <details><summary>Hinweise anzeigen</summary>
+    <ul><li>Wie verändert sich die Masse bei Materieaufnahme?</li><li>Welche Rolle spielt der Entartungsdruck?</li><li>Was kann passieren, wenn die Masse die Stabilitätsgrenze überschreitet?</li></ul>
+   </details>
+   <p class="small">Die Chandrasekhar-Grenze liegt für einen typischen nicht rotierenden weißen Zwerg bei ungefähr 1,4 Sonnenmassen; der genaue Wert hängt von den Modellannahmen ab. Das Überschreiten der Grenze führt nicht in jedem realen System zwangsläufig auf genau dieselbe Weise zu einer Supernova.</p>
+  </div>
+ </div>
+</section>
+
+<section id="protokoll">
+ <div class="grid">
+  <div class="card span-12">
+   <h2>Auswertung und Protokoll</h2>
+   <p>Beantworte die drei Auswertungsfragen. Deine Texte bleiben in diesem Browser, solange du sie nicht exportierst oder den Browserdatenspeicher löschst.</p>
+  </div>
+  <div class="card span-12">
+   <h3>2a · Masse, Größe und Dichte</h3>
+   <p>Vergleiche Sirius B mit der Sonne: Wie können beide fast dieselbe Masse haben, obwohl Sirius B nur ungefähr erdgroß ist? Was erklärt, dass Sirius B so viel dichter ist als die Erde?</p>
+   <textarea id="answerA" placeholder="Antwort in ganzen Sätzen …"></textarea>
+  </div>
+  <div class="card span-12">
+   <h3>2b · Stabilität</h3>
+   <p>Warum kollabiert Sirius B trotz seiner hohen Dichte und Oberflächengravitation nicht weiter?</p>
+   <textarea id="answerB" placeholder="Antwort in ganzen Sätzen …"></textarea>
+  </div>
+  <div class="card span-12">
+   <h3>2c · Doppelsternsystem</h3>
+   <p>Was könnte sich ändern, wenn Sirius B in seinem Doppelsternsystem weiter Materie aufnimmt? Erkläre, warum die Chandrasekhar-Grenze dabei wichtig ist.</p>
+   <textarea id="answerC" placeholder="Antwort in ganzen Sätzen …"></textarea>
+   <div class="actions"><button class="btn primary" onclick="exportWork()">Antworten als Textdatei exportieren</button><button class="btn secondary" onclick="saveWork()">Zwischenspeichern</button><button class="btn secondary" onclick="clearWork()">Alle Eingaben löschen</button></div>
+   <div id="saveFeedback" class="feedback" role="status"></div>
+  </div>
+  <div class="card span-12">
+   <h3>Quellen</h3>
+   <p class="small">Messwerte nach Bond, H. E. et al. (2017), <i>The Astrophysical Journal</i>, 840, 70, DOI: 10.3847/1538-4357/aa6af8, und Bédard, A. et al. (2019), <i>Monthly Notices of the Royal Astronomical Society</i>, 484, 2711–2725, DOI: 10.1093/mnras/sty3395.</p>
+  </div>
+ </div>
+</section>
+<footer>Digitales Arbeitsmaterial · Sirius B · Die Berechnungen erfolgen lokal im Browser. Die Seite sendet keine Eingaben an einen Server.</footer>
+</main>
+<script>
+const tabs=[...document.querySelectorAll('nav button[data-tab]')];
+const sections=[...document.querySelectorAll('main section')];
+function go(id){tabs.forEach(b=>b.setAttribute('aria-current',b.dataset.tab===id?'page':'false'));sections.forEach(s=>s.classList.toggle('active',s.id===id));document.getElementById('progressBar').style.width=((sections.findIndex(s=>s.id===id)+1)/sections.length*100)+'%';window.scrollTo({top:0,behavior:'smooth'});}
+tabs.forEach(b=>b.addEventListener('click',()=>go(b.dataset.tab)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+const M=1.018*1.9885e30, R=.008098*6.957e8, G=6.674e-11;
+const V=4/3*Math.PI*R**3, rho=M/V, rhoRatio=rho/5.51e3, g=G*M/R**2, gRatio=g/9.81;
+const expected={mass:M,radius:R,volume:V,density:rho,densityRatio:rhoRatio,gravity:g,gravityRatio:gRatio};
+const tolerances={mass:.012,radius:.012,volume:.025,density:.035,densityRatio:.04,gravity:.025,gravityRatio:.04};
+function parseVal(s){return Number(String(s).trim().replace(',','.').replace(/[×·]/g,'').replace(/10\^?([+-]?\d+)/g,'e$1'));}
+function showFeedback(id,msg,good){const el=document.getElementById('fb-'+id);el.textContent=msg;el.className='feedback show '+(good?'good':'bad');}
+function check(which){
+ let keys=which==='density'?['density','densityRatio']:which==='gravity'?['gravity','gravityRatio']:[which];
+ let all=true;
+ keys.forEach(k=>{const input=document.getElementById(k);const v=parseVal(input.value);const ok=Number.isFinite(v)&&v>0&&Math.abs(v-expected[k])/expected[k]<=tolerances[k];all=all&&ok;showFeedback(k,ok?'Passt – dein Ergebnis liegt im akzeptierten Rundungsbereich.':'Noch nicht ganz. Prüfe Umrechnung, Potenzen, Einheiten und Rundung.',ok);});
+ updateProgress();
+}
+function showAnswers(){const el=document.getElementById('answers');el.innerHTML=`<strong>Kontrollwerte (gerundet)</strong><br>M ≈ ${M.toExponential(4)} kg<br>R ≈ ${R.toExponential(4)} m<br>V ≈ ${V.toExponential(4)} m³<br>ρ ≈ ${rho.toExponential(4)} kg/m³ (${rhoRatio.toFixed(0)}-facher Erddichte)<br>g ≈ ${g.toExponential(4)} m/s² (${gRatio.toFixed(0)}-fache Erdbeschleunigung)`;el.className='feedback show good';}
+const workIds=['mass','radius','volume','density','densityRatio','gravity','gravityRatio','compareNote','stability','chandra','answerA','answerB','answerC'];
+function saveWork(){const data={};workIds.forEach(id=>data[id]=document.getElementById(id).value);try{localStorage.setItem('siriusBWork',JSON.stringify(data));const el=document.getElementById('saveFeedback');el.textContent='Zwischengespeichert in diesem Browser.';el.className='feedback show good';}catch(e){const el=document.getElementById('saveFeedback');el.textContent='Speichern ist in diesem Browser nicht verfügbar. Exportiere deine Antworten stattdessen als Textdatei.';el.className='feedback show bad';}}
+function loadWork(){try{const data=JSON.parse(localStorage.getItem('siriusBWork')||'{}');workIds.forEach(id=>{if(data[id]!==undefined)document.getElementById(id).value=data[id];});}catch(e){}}
+function exportWork(){let lines=['Sirius B – digitales Arbeitsprotokoll',''];workIds.forEach(id=>{const el=document.getElementById(id);if(el.value.trim())lines.push(el.labels?.[0]?.textContent||id,el.value,'');});const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Sirius_B_Arbeitsprotokoll.txt';a.click();URL.revokeObjectURL(a.href);}
+function clearWork(){if(!confirm('Wirklich alle Eingaben auf dieser Seite löschen?'))return;workIds.forEach(id=>document.getElementById(id).value='');localStorage.removeItem('siriusBWork');document.querySelectorAll('.feedback').forEach(el=>{el.textContent='';el.className='feedback';});}
+function updateProgress(){let count=0;workIds.forEach(id=>{if(document.getElementById(id).value.trim())count++;});document.getElementById('progressBar').style.width=Math.max(20,count/workIds.length*100)+'%';}
+loadWork();document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',updateProgress));updateProgress();
+</script>
+</body>
+</html>
