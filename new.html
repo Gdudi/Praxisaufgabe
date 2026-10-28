@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Arbeitsblatt Weiße Zwerge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}
+img{max-width:100%}
+[hidden]:not([hidden=until-found i]){display:none!important}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#EEF1F6; --surface:#FFFFFF; --field:#F6F8FC; --ink:#131C2E; --muted:#576277;
+  --line:#D2D9E5; --accent:#1D5FD1; --accent-ink:#FFFFFF; --accent-soft:#E2ECFC; --danger:#B3261E;
+  --f-display:'Bricolage Grotesque','Avenir Next','Helvetica Neue',Arial,sans-serif;
+  --f-body:'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  --f-data:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --app-height:100dvh;
+  --visual-top:0px;
+  --kb-page-space:0px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B111B; --surface:#141C2A; --field:#0E1521; --ink:#E6EBF4; --muted:#93A0B6;
+    --line:#29344A; --accent:#6FA6FF; --accent-ink:#0B111B; --accent-soft:#1A2A47; --danger:#FF8A80; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B111B; --surface:#141C2A; --field:#0E1521; --ink:#E6EBF4; --muted:#93A0B6;
+  --line:#29344A; --accent:#6FA6FF; --accent-ink:#0B111B; --accent-soft:#1A2A47; --danger:#FF8A80; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  margin:0; display:flex; flex-direction:column;
+  padding-block:0;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  background:var(--bg); color:var(--ink);
+  font:400 16px/1.5 var(--f-body);
+  -webkit-text-size-adjust:100%;
+  padding-bottom:var(--kb-page-space,0px);
+}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* Kopfzeile */
+.top{flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding-block:12px;border-bottom:1px solid var(--line)}
+.title{margin-right:auto;min-width:0}
+.title h1{margin:0;font:700 28px/1.1 var(--f-display);letter-spacing:-.01em;text-wrap:balance}
+.title p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.who{display:flex;align-items:center;gap:8px}
+.who label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.who input{width:200px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.prog{min-width:150px}
+.prog span{display:block;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:6px;margin-top:4px;border-radius:3px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.btn{min-height:44px;padding:8px 18px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:500}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.danger{border-color:var(--danger);color:var(--danger)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn:active:not(:disabled){transform:translateY(1px)}
+
+/* Grundlayout */
+.layout{flex:1;min-height:0;display:grid;grid-template-columns:minmax(330px,384px) minmax(0,1fr);gap:20px;padding-block:16px}
+aside,main{min-height:0;min-width:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+aside{display:flex;flex-direction:column;gap:14px}
+main{display:flex;flex-direction:column;gap:14px;padding-bottom:24px;scroll-padding-top:76px}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.panel h2{margin:0 0 8px;font:600 12px/1.3 var(--f-body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.formulas{display:grid;gap:6px;font-family:var(--f-data);font-size:16px}
+.formulas div{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.formulas small{font:400 12px var(--f-body);color:var(--muted)}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 .2em}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 .25em}
+table.data{width:100%;border-collapse:collapse;font-size:14px}
+table.data th{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 6px 6px 0}
+table.data td{padding:7px 6px 7px 0;border-top:1px solid var(--line);vertical-align:top}
+table.data td:nth-child(2){font-family:var(--f-data);color:var(--accent);white-space:nowrap;padding-right:10px}
+table.data td:nth-child(3){font-family:var(--f-data);font-size:13px}
+table.data tr.own td{background:var(--accent-soft)}
+table.data tr.own td:first-child{padding-left:6px}
+
+/* Formelleiste: standardmäßig mehrzeilig, bleibt innerhalb der Aufgabenfläche sichtbar */
+.kp{position:sticky;top:0;z-index:6;display:flex;flex-wrap:wrap;gap:6px 16px;padding:8px 10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 16px rgba(10,20,40,.10);flex:0 0 auto;align-content:flex-start;align-items:flex-start}
+.kg{display:flex;flex-wrap:wrap;gap:6px;flex:0 0 auto;min-width:0}
+.kb{flex:0 0 auto;min-width:46px;height:44px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--field);font:500 18px/1 var(--f-data);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.kb:active{background:var(--accent-soft);border-color:var(--accent)}
+.kb sup{font-size:.62em;line-height:0;position:relative;top:-.1em}
+.kb .fr{font-size:12px;margin:0}
+.kb .fr>span{min-width:10px;text-align:center}
+.kb.nav{background:var(--accent-soft)}
+
+/* Formelfelder */
+.mf{position:relative;display:block;width:100%;border:1px solid var(--line);border-radius:8px;background:var(--field);cursor:text;scroll-margin-top:76px;scroll-margin-bottom:14px}
+.mf.on{border-color:var(--accent);outline:3px solid var(--accent-soft)}
+.mfv{position:relative;padding:10px 14px;min-height:48px;font:400 18px/1.5 var(--f-data);overflow-wrap:anywhere;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.mf.ml .mfv{min-height:164px}
+.mfv.empty::after{content:attr(data-ph);position:absolute;left:18px;top:12px;font:400 15px var(--f-body);color:var(--muted);pointer-events:none}
+.mfi{position:absolute;inset:0;width:100%;height:100%;z-index:2;margin:0;padding:0;border:0;background:transparent;opacity:0;color:transparent;caret-color:transparent;font-size:16px}
+.mc{white-space:pre}
+.mfr{display:inline-block;vertical-align:middle;text-align:center;margin:0 3px}
+.mn{display:block;padding:0 4px 1px;min-width:.9em;border-bottom:1.5px solid currentColor}
+.md{display:block;padding:1px 4px 0;min-width:.9em}
+.msup{position:relative;top:-.55em;font-size:.72em;margin-left:1px}
+.ph{display:inline-block;width:.6em;height:.95em;margin:0 1px;vertical-align:text-bottom;border:1.5px dashed var(--muted);border-radius:2px}
+.caret{display:inline-block;width:0;height:1.15em;margin:0 -1px;vertical-align:text-bottom;border-left:2px solid var(--accent);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Aufgaben */
+.intro p{margin:0 0 6px}
+.intro p:last-child{margin:0;color:var(--muted);font-size:14px}
+.sec{margin:10px 0 0;font:700 22px/1.2 var(--f-display);letter-spacing:-.005em}
+.sec+.note{margin:-6px 0 0;color:var(--muted)}
+.task{display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.tl{font:700 22px/1 var(--f-display);color:var(--accent)}
+.tb{min-width:0;display:flex;flex-direction:column;gap:12px}
+.q{margin:0;font-weight:500}
+.way .lbl{display:block;margin-bottom:4px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--field);padding:10px 12px;display:block;resize:vertical;line-height:1.5;scroll-margin-top:76px;scroll-margin-bottom:14px}
+.answer textarea{min-height:150px}
+.res{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.res .sym{font:500 20px var(--f-data);min-width:44px}
+.res .sym.wide{font:500 15px var(--f-body);min-width:0}
+.res .mf{flex:1 1 220px;max-width:380px}
+.res .unit{font:500 17px var(--f-data);color:var(--muted)}
+.res.cmp{padding-top:2px}
+.foot{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:6px}
+.src{margin:0;font-size:13px;color:var(--muted)}
+.src strong{font-weight:600;color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:max(18px,env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;font-size:15px;transition:.2s;z-index:30;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* Kleine Displays: normaler Seitenscroll */
+@media (max-width:860px){
+  html,body{height:auto;min-height:100%}
+  body{display:block;overflow-x:hidden;overflow-y:auto}
+  .layout{display:block;height:auto;min-height:0;position:relative;padding-block:12px}
+  aside,main{overflow:visible;min-height:auto}
+  aside{margin-bottom:14px}
+  .kp{top:env(safe-area-inset-top,0px)}
+  .who input{width:150px}
+  .mf.ml .mfv{min-height:150px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.caret{animation:none}}
+
+/* =========================================================
+   iPad im Querformat: Header kann aus dem Bild scrollen.
+   Danach bleibt die Arbeitsfläche bildschirmfüllend und
+   linke/rechte Spalte scrollen unabhängig voneinander.
+   ========================================================= */
+@media (min-width:861px) and (any-pointer:coarse) and (orientation:landscape){
+  html,body{height:auto;min-height:100%;}
+  body{display:block;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:auto;}
+  .top{position:relative;}
+  .layout{
+    position:sticky;
+    top:var(--visual-top,0px);
+    z-index:1;
+    display:grid;
+    grid-template-columns:minmax(280px,34vw) minmax(0,1fr);
+    align-items:stretch;
+    flex:none;
+    width:100%;
+    height:var(--app-height,100dvh);
+    min-height:0;
+    overflow:hidden;
+    gap:14px;
+    padding-block:10px;
+  }
+  aside,main{
+    height:100%;
+    min-height:0;
+    min-width:0;
+    overflow-x:hidden;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior: auto;
+  }
+  aside{display:flex;flex-direction:column;}
+  main{display:flex;flex-direction:column;padding-bottom:20px;scroll-padding-top:70px;scroll-padding-bottom:18px;}
+  .kp{top:0;flex:0 0 auto;max-height:none;}
+  .mf.ml .mfv{min-height:176px;}
+  .mf,textarea{scroll-margin-top:72px;scroll-margin-bottom:16px;}
+}
+
+/* Tastatur geöffnet: eine kompakte, horizontal scrollbarere Tastenreihe.
+   Wichtig: Body und Kopfzeile bleiben weiterhin scrollbar. */
+body.keyboard-open .layout{
+  height:var(--app-height,100dvh);
+}
+body.keyboard-open .kp{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  flex-flow:row nowrap;
+  align-items:center;
+  flex:0 0 60px;
+  width:100%;
+  height:60px;
+  min-height:60px;
+  max-height:60px;
+  gap:8px;
+  padding:6px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  align-content:center;
+}
+body.keyboard-open .kp .kg{display:flex;flex-flow:row nowrap;flex:0 0 auto;gap:6px;}
+body.keyboard-open .kp .kb{flex:0 0 auto;height:44px;min-height:44px;}
+body.keyboard-open .mf.ml .mfv{min-height:190px;}
+body.keyboard-open main{scroll-padding-top:70px;scroll-padding-bottom:14px;}
+body.keyboard-open .mf,body.keyboard-open textarea{scroll-margin-top:70px;scroll-margin-bottom:14px;}
+
+/* Hochformat auf einem iPad: Dokument als Ganzes scrollen lassen. */
+@media (max-width:860px) and (any-pointer:coarse){
+  body.keyboard-open .layout{position:relative;height:auto;min-height:0;overflow:visible;}
+  body.keyboard-open aside,body.keyboard-open main{height:auto;max-height:none;overflow:visible;}
+  body.keyboard-open .kp{position:sticky;top:env(safe-area-inset-top,0px);max-height:60px;}
+  body.keyboard-open .mf.ml .mfv{min-height:170px;}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="title">
+    <h1>Weiße Zwerge</h1>
+    <p>Arbeitsblatt · Sirius B: Masse, Größe und Dichte</p>
+  </div>
+  <div class="who"><label for="name">Name</label><input id="name" type="text" autocomplete="name" autocapitalize="words" placeholder="Vor- und Nachname"></div>
+  <div class="prog" aria-live="polite"><span id="progText">0 von 10 ausgefüllt</span><div class="bar"><i id="progBar"></i></div></div>
+  <button class="btn" id="resetBtn" type="button">Alles löschen</button>
+</header>
+<div class="layout">
+  <aside aria-label="Formeln und Messwerte">
+    <section class="panel">
+      <h2>Benötigte Formeln</h2>
+      <div class="formulas">
+        <div><span>Volumen einer Kugel:</span></div>
+        <div>V = <span class="fr"><span>4</span><span>3</span></span> π R³</div>
+        <div><small>Mittlere Dichte:</small></div>
+        <div>ρ = <span class="fr"><span>M</span><span>V</span></span></div>
+        <div><small>Oberflächengravitation:</small></div>
+        <div>g = <span class="fr"><span>G M</span><span>R²</span></span></div>
+      </div>
+    </section>
+    <section class="panel">
+      <h2>Beobachtungsdaten und Vergleichswerte</h2>
+      <table class="data">
+        <thead><tr><th>Größe</th><th>Symbol</th><th>Wert</th></tr></thead>
+        <tbody>
+          <tr class="own"><td>Masse von Sirius B</td><td>M</td><td>1,018 Sonnenmassen (M☉)</td></tr>
+          <tr class="own"><td>Radius von Sirius B</td><td>R</td><td>0,008098 Sonnenradien (R☉)</td></tr>
+          <tr><td>Sonnenmasse</td><td>M☉</td><td>1,9885 × 10³⁰ kg</td></tr>
+          <tr><td>Sonnenradius</td><td>R☉</td><td>6,957 × 10⁸ m</td></tr>
+          <tr><td>Erdradius</td><td>R⊕</td><td>6,371 × 10⁶ m</td></tr>
+          <tr><td>Mittlere Erddichte</td><td>ρ⊕</td><td>5,51 × 10³ kg/m³</td></tr>
+          <tr><td>Erdbeschleunigung</td><td>g⊕</td><td>9,81 m/s²</td></tr>
+          <tr><td>Gravitationskonstante</td><td>G</td><td>6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </aside>
+  <main id="main" aria-label="Aufgaben"></main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function(){
+var M=(function(){
+  function link(seq,p){seq.p=p;for(var k=0;k<seq.length;k++){var nd=seq[k];if(nd.t==='fr'){link(nd.n,{node:nd,slot:'n',owner:seq});link(nd.d,{node:nd,slot:'d',owner:seq});}else if(nd.t==='sup'){link(nd.s,{node:nd,slot:'s',owner:seq});}}}
+  function newEd(){var r=[];link(r,null);return {root:r,seq:r,i:0};}
+  function relink(ed){link(ed.root,null);}
+  function isCh(nd,c){return !!nd&&nd.t==='c'&&nd.v===c;}
+  function isOperand(nd){if(nd.t==='sup'||nd.t==='fr')return true;return nd.t==='c'&&/[0-9A-Za-zÄÖÜäöüßπρ☉⊕.,]/.test(nd.v);}
+  function emptyNode(nd){if(nd.t==='fr')return !nd.n.length&&!nd.d.length;if(nd.t==='sup')return !nd.s.length;return false;}
+  function blank(seq){for(var k=0;k<seq.length;k++){var nd=seq[k];if(nd.t==='c'){if(nd.v.trim()!=='')return false;}else if(nd.t==='fr'){if(!blank(nd.n)||!blank(nd.d))return false;}else if(nd.t==='sup'){if(!blank(nd.s))return false;}}return true;}
+  function clean(a,depth){var out=[];if(!Array.isArray(a)||depth>6)return out;for(var k=0;k<a.length;k++){var nd=a[k];if(!nd||typeof nd!=='object')continue;if(nd.t==='c'&&typeof nd.v==='string'&&nd.v.length>0&&nd.v.length<=2)out.push({t:'c',v:nd.v});else if(nd.t==='nl')out.push({t:'nl'});else if(nd.t==='fr')out.push({t:'fr',n:clean(nd.n,depth+1),d:clean(nd.d,depth+1)});else if(nd.t==='sup')out.push({t:'sup',s:clean(nd.s,depth+1)});}return out;}
+  function load(ed,data){ed.root=clean(data,0);ed.seq=ed.root;ed.i=ed.root.length;relink(ed);}
+  function reset(ed){ed.root=[];ed.seq=ed.root;ed.i=0;relink(ed);}
+  function insSup(ed){var sp={t:'sup',s:[]};ed.seq.splice(ed.i,0,sp);ed.seq=sp.s;ed.i=0;relink(ed);}
+  function insFrac(ed){var s=ed.seq,j=ed.i,start=j,num=null;if(j>0&&isCh(s[j-1],')')){var depth=0,k=j-1;for(;k>=0;k--){if(isCh(s[k],')'))depth++;else if(isCh(s[k],'(')){depth--;if(depth===0)break;}}if(k>=0){num=s.slice(k+1,j-1);start=k;}}if(num===null){while(start>0&&isOperand(s[start-1]))start--;num=s.slice(start,j);}s.splice(start,j-start);var fr={t:'fr',n:num,d:[]};s.splice(start,0,fr);ed.seq=num.length?fr.d:fr.n;ed.i=0;relink(ed);}
+  function exitSup(ed){var p=ed.seq.p;ed.seq=p.owner;ed.i=p.owner.indexOf(p.node)+1;}
+  function newline(ed){if(ed.seq!==ed.root)return;ed.seq.splice(ed.i,0,{t:'nl'});ed.i++;}
+  function typeChar(ed,ch){if(ch==='\n'||ch==='\r')return newline(ed);if(ch==='/')return insFrac(ed);if(ch==='^')return insSup(ed);if(ch==='*')ch='·';else if(ch==='-')ch='−';var p=ed.seq.p;if(p&&p.slot==='s'){if(/[·×÷=≈ ]/.test(ch)||((ch==='+'||ch==='−')&&ed.seq.length>0))exitSup(ed);}ed.seq.splice(ed.i,0,{t:'c',v:ch});ed.i++;}
+  function right(ed){var s=ed.seq,i=ed.i;if(i<s.length){var nd=s[i];if(nd.t==='fr'){ed.seq=nd.n;ed.i=0;}else if(nd.t==='sup'){ed.seq=nd.s;ed.i=0;}else ed.i=i+1;return;}var p=s.p;if(!p)return;if(p.slot==='n'){ed.seq=p.node.d;ed.i=0;return;}ed.seq=p.owner;ed.i=p.owner.indexOf(p.node)+1;}
+  function left(ed){var s=ed.seq,i=ed.i;if(i>0){var nd=s[i-1];if(nd.t==='fr'){ed.seq=nd.d;ed.i=nd.d.length;}else if(nd.t==='sup'){ed.seq=nd.s;ed.i=nd.s.length;}else ed.i=i-1;return;}var p=s.p;if(!p)return;if(p.slot==='d'){ed.seq=p.node.n;ed.i=p.node.n.length;return;}ed.seq=p.owner;ed.i=p.owner.indexOf(p.node);}
+  function down(ed){var p=ed.seq.p;if(p&&p.slot==='n'){ed.seq=p.node.d;ed.i=Math.min(ed.i,p.node.d.length);}}
+  function up(ed){var p=ed.seq.p;if(p&&p.slot==='d'){ed.seq=p.node.n;ed.i=Math.min(ed.i,p.node.n.length);}}
+  function backspace(ed){var s=ed.seq,i=ed.i;if(i>0){var pv=s[i-1];if(pv.t==='c'||pv.t==='nl'){s.splice(i-1,1);ed.i=i-1;return;}if(emptyNode(pv)){s.splice(i-1,1);ed.i=i-1;relink(ed);return;}left(ed);return;}var p=s.p;if(!p)return;var o=p.owner,nd=p.node,k=o.indexOf(nd);if(emptyNode(nd)){o.splice(k,1);ed.seq=o;ed.i=k;relink(ed);return;}if(p.slot==='d'&&!nd.d.length){var num=nd.n;o.splice.apply(o,[k,1].concat(num));ed.seq=o;ed.i=k+num.length;relink(ed);return;}left(ed);}
+  return {newEd:newEd,relink:relink,load:load,reset:reset,blank:blank,insFrac:insFrac,insSup:insSup,typeChar:typeChar,left:left,right:right,up:up,down:down,backspace:backspace};
+})();
+
+var CALC=[
+  {id:'a',q:'Rechne die Masse von Sirius B in Kilogramm um.',sym:'M',unit:'kg'},
+  {id:'b',q:'Rechne den Radius von Sirius B in Meter um.',sym:'R',unit:'m'},
+  {id:'c',q:'Berechne das Volumen von Sirius B.',sym:'V',unit:'m³'},
+  {id:'d',q:'Berechne die mittlere Dichte von Sirius B.',sym:'ρ',unit:'kg/m³',cmp:'ρ(Sirius B) / ρ⊕ ='},
+  {id:'e',q:'Berechne die Oberflächengravitation von Sirius B.',sym:'g',unit:'m/s²',cmp:'g(Sirius B) / g⊕ ='}
+];
+var TEXTS=[
+  {id:'a',q:'Vergleiche Sirius B mit der Sonne: Wie können beide fast dieselbe Masse haben, obwohl Sirius B nur ungefähr erdgroß ist? Was erklärt, dass Sirius B so viel dichter ist als die Erde?'},
+  {id:'b',q:'Trotz der hohen berechneten Dichte und Oberflächengravitation kollabiert Sirius B nicht weiter. Warum nicht?'},
+  {id:'c',q:'Was könnte sich ändern, wenn Sirius B in seinem Doppelsternsystem weiter Materie aufnimmt? Erkläre, warum die Chandrasekhar-Grenze dabei wichtig ist.'}
+];
+var REQUIRED=['calc-a-res','calc-b-res','calc-c-res','calc-d-res','calc-d-cmp','calc-e-res','calc-e-cmp','text-a','text-b','text-c'];
+var AUFTRAG='Rechnet mit den veröffentlichten Messwerten für Sirius B. Notiert Rechenweg und Einheiten. Rundet eure Ergebnisse sinnvoll.';
+var AUSW='Beantwortet die Fragen in ganzen Sätzen. Bezieht euch auf eure berechneten Werte.';
+var TIPP='Eingabehilfe: Mit der Leiste oben setzt du Brüche, Hochzahlen, π und Rechenzeichen. Auf der Tastatur erzeugt „/“ einen Bruch und „^“ eine Hochzahl. Mit den Pfeilen oder „→“ verlässt du Zähler, Nenner und Hochzahl.';
+var QUELLEN='Bond, H. E. et al. (2017), The Astrophysical Journal, 840, 70. DOI: 10.3847/1538-4357/aa6af8. | Bédard, A. et al. (2019), Monthly Notices of the Royal Astronomical Society, 484, 2711–2725. DOI: 10.1093/mnras/sty3395.';
+var KEY='weisse-zwerge-sirius-b-v2';
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function $(id){return document.getElementById(id);}
+
+/* iPad-Sichtbereich und Tastaturerkennung */
+function revealTarget(el){
+  if(!el||!el.matches)return null;
+  if(el.matches('.mf'))return el;
+  if(el.matches('.mfi'))return el.closest('.mf');
+  if(el.matches('textarea, #name'))return el;
+  return null;
+}
+function keyboardInset(){
+  var vv=window.visualViewport;
+  if(!vv)return 0;
+  var inset=window.innerHeight-vv.height;
+  return inset>80?inset:0;
+}
+function updateKeyboardSpace(){
+  var root=document.documentElement;
+  var vv=window.visualViewport;
+  var h=vv?vv.height:window.innerHeight;
+  var top=vv?vv.offsetTop:0;
+  root.style.setProperty('--app-height',Math.max(200,Math.round(h))+'px');
+  root.style.setProperty('--visual-top',Math.max(0,Math.round(top))+'px');
+  var target=revealTarget(document.activeElement);
+  var inset=keyboardInset();
+  var open=!!target&&inset>80;
+  root.style.setProperty('--kb-page-space',open?Math.round(inset)+'px':'0px');
+  document.body.classList.toggle('keyboard-open',open);
+}
+function scrollHost(el){
+  for(var p=el&&el.parentElement;p&&p!==document.body&&p!==document.documentElement;p=p.parentElement){
+    var oy=window.getComputedStyle(p).overflowY;
+    if(/(auto|scroll|overlay)/.test(oy)&&p.scrollHeight>p.clientHeight+2)return p;
+  }
+  return null;
+}
+var revealSerial=0;
+function ensureFieldVisible(el){
+  var target=revealTarget(el)||el;
+  if(!target||!target.isConnected)return;
+  var vv=window.visualViewport;
+  var visibleTop=vv?vv.offsetTop:0;
+  var visibleBottom=vv?(vv.offsetTop+vv.height):window.innerHeight;
+  var topLimit=visibleTop+8,bottomLimit=visibleBottom-12;
+  var mainEl=$('main'),bar=$('kp');
+  if(mainEl&&mainEl.contains(target)){
+    var mr=mainEl.getBoundingClientRect();
+    topLimit=Math.max(topLimit,mr.top+8);
+    bottomLimit=Math.min(bottomLimit,mr.bottom-8);
+    if(bar){
+      var br=bar.getBoundingClientRect();
+      if(br.top<=visibleTop+32&&br.bottom>visibleTop)topLimit=Math.max(topLimit,br.bottom+8);
+    }
+  }
+  if(bottomLimit<=topLimit)return;
+  var measure=target,r=measure.getBoundingClientRect(),available=bottomLimit-topLimit,delta=0;
+  if(r.height<=available){
+    if(r.bottom>bottomLimit)delta=r.bottom-bottomLimit;
+    if(r.top-delta<topLimit)delta=r.top-topLimit;
+  }else{
+    var caret=target.querySelector?target.querySelector('.caret'):null;
+    if(caret){measure=caret;r=caret.getBoundingClientRect();if(r.bottom>bottomLimit)delta=r.bottom-bottomLimit;if(r.top-delta<topLimit)delta=r.top-topLimit;}
+    else delta=r.top-topLimit;
+  }
+  if(Math.abs(delta)<1)return;
+  var host=scrollHost(target);
+  if(host)host.scrollTop+=delta;
+  else window.scrollBy(0,delta);
+}
+function scheduleReveal(el){
+  var target=revealTarget(el)||el;
+  if(!target)return;
+  var serial=++revealSerial;
+  function run(){
+    if(serial!==revealSerial||!target.isConnected)return;
+    var cur=document.activeElement;
+    if(cur!==target&&!(target.contains&&target.contains(cur)))return;
+    updateKeyboardSpace();
+    ensureFieldVisible(target);
+  }
+  requestAnimationFrame(function(){requestAnimationFrame(run);});
+  window.setTimeout(run,100);
+  window.setTimeout(run,280);
+}
+document.addEventListener('focusin',function(ev){var target=revealTarget(ev.target);if(target){updateKeyboardSpace();scheduleReveal(target);}});
+document.addEventListener('focusout',function(){window.setTimeout(updateKeyboardSpace,80);});
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',function(){updateKeyboardSpace();var target=revealTarget(document.activeElement);if(target)scheduleReveal(target);},{passive:true});
+  window.visualViewport.addEventListener('scroll',function(){var target=revealTarget(document.activeElement);if(target)scheduleReveal(target);},{passive:true});
+}
+window.addEventListener('resize',updateKeyboardSpace,{passive:true});
+
+/* Formel-Toolbar */
+function kb(a,html,label,cls){return '<button type="button" class="kb'+(cls?' '+cls:'')+'" data-a="'+a+'" aria-label="'+label+'">'+html+'</button>';}
+function kch(c,label){return kb('ch:'+c,c,label||c);}
+var TOOLBAR='<div class="kp" id="kp" role="toolbar" aria-label="Eingabehilfe für Formeln">'+
+  '<div class="kg">'+kb('frac','<span class="fr"><span>▫</span><span>▫</span></span>','Bruch')+kb('sup','x<sup>n</sup>','Hochzahl')+kb('sq','x<sup>2</sup>','Quadrat')+kb('cu','x<sup>3</sup>','hoch drei')+kb('p10','10<sup>n</sup>','Zehnerpotenz')+kb('x10','×10<sup>n</sup>','mal Zehnerpotenz')+'</div>'+
+  '<div class="kg">'+kch('π','Pi')+kch('ρ','Rho')+kch('☉','Sonne')+kch('⊕','Erde')+'</div>'+
+  '<div class="kg">'+kch('+','plus')+kch('−','minus')+kch('·','mal Punkt')+kch('×','mal')+kch('÷','geteilt')+kch('(','Klammer auf')+kch(')','Klammer zu')+kch('=','gleich')+kch('≈','ungefähr gleich')+'</div>'+
+  '<div class="kg">'+kb('left','←','Cursor nach links','nav')+kb('right','→','Cursor nach rechts','nav')+kb('bs','⌫','Löschen','nav')+'</div>'+
+'</div>';
+
+/* Formel-Darstellung */
+function sp(c){var e=document.createElement('span');e.className=c;return e;}
+function mkCaret(){var c=sp('caret');c.setAttribute('aria-hidden','true');return c;}
+function renderSeq(seq,host,caret,slot){
+  host._seq=seq;var has=!!caret&&caret.seq===seq;
+  if(!seq.length){if(has)host.appendChild(mkCaret());if(slot)host.appendChild(sp('ph'));return;}
+  for(var i=0;i<=seq.length;i++){
+    if(has&&caret.i===i)host.appendChild(mkCaret());if(i===seq.length)break;
+    var nd=seq[i],el;
+    if(nd.t==='c'){el=sp('mc');el.textContent=nd.v===' '?' ':nd.v;}
+    else if(nd.t==='nl'){el=document.createElement('br');}
+    else if(nd.t==='fr'){el=sp('mfr');var n=sp('mn'),d=sp('md');renderSeq(nd.n,n,caret,true);renderSeq(nd.d,d,caret,true);el.appendChild(n);el.appendChild(d);}
+    else{el=sp('msup');renderSeq(nd.s,el,caret,true);}
+    el._ni=i;host.appendChild(el);
+  }
+}
+function nearest(container,ev){
+  var seq=container._seq,best=null,bd=1e9;
+  for(var k=0;k<container.children.length;k++){
+    var c=container.children[k];if(c._ni===undefined||c.tagName==='BR')continue;
+    var r=c.getBoundingClientRect();var dx=ev.clientX<r.left?r.left-ev.clientX:(ev.clientX>r.right?ev.clientX-r.right:0);var dy=ev.clientY<r.top?r.top-ev.clientY:(ev.clientY>r.bottom?ev.clientY-r.bottom:0);var d=dy*3+dx;
+    if(d<bd){bd=d;best=c;}
+  }
+  if(!best)return {seq:seq,i:seq.length};var rb=best.getBoundingClientRect();return {seq:seq,i:best._ni+(ev.clientX>(rb.left+rb.right)/2?1:0)};
+}
+function locate(view,el,ev){
+  if(el._seq)return nearest(el,ev);var cur=el;
+  while(cur&&cur!==view&&!(cur.parentElement&&cur.parentElement._seq))cur=cur.parentElement;
+  if(!cur||cur===view)return nearest(view,ev);if(cur.classList.contains('caret'))return null;
+  var seq=cur.parentElement._seq;if(cur._ni===undefined)return {seq:seq,i:seq.length};var r=cur.getBoundingClientRect();return {seq:seq,i:cur._ni+(ev.clientX>(r.left+r.right)/2?1:0)};
+}
+var FIELDS={},activeField=null,onChange=function(){};
+function mfHTML(id,ml,ph,label){return '<div class="mf'+(ml?' ml':'')+'" id="'+id+'"><div class="mfv" data-ph="'+esc(ph)+'"></div><input class="mfi" type="text" inputmode="text" aria-label="'+esc(label)+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="'+(ml?'enter':'done')+'"></div>';}
+function initMath(id,ml){
+  var root=$(id),view=root.querySelector('.mfv'),inp=root.querySelector('.mfi');var ed=M.newEd(),focused=false;
+  function draw(){view.textContent='';renderSeq(ed.root,view,focused?{seq:ed.seq,i:ed.i}:null,false);view.classList.toggle('empty',ed.root.length===0);}
+  function changed(){draw();onChange();scheduleReveal(root);}
+  function doAct(a){
+    if(a.indexOf('ch:')===0)M.typeChar(ed,a.slice(3));
+    else switch(a){case 'frac':M.insFrac(ed);break;case 'sup':M.insSup(ed);break;case 'sq':M.insSup(ed);M.typeChar(ed,'2');M.right(ed);break;case 'cu':M.insSup(ed);M.typeChar(ed,'3');M.right(ed);break;case 'p10':M.typeChar(ed,'1');M.typeChar(ed,'0');M.insSup(ed);break;case 'x10':M.typeChar(ed,'×');M.typeChar(ed,'1');M.typeChar(ed,'0');M.insSup(ed);break;case 'left':M.left(ed);break;case 'right':M.right(ed);break;case 'bs':M.backspace(ed);break;}
+  }
+  var api={kind:'math',ed:ed,get:function(){return JSON.stringify(ed.root);},set:function(s){var d=[];try{d=JSON.parse(s);}catch(e){}M.load(ed,d);draw();},empty:function(){return M.blank(ed.root);},reset:function(){M.reset(ed);draw();},seq:function(){return ed.root;},act:function(a){doAct(a);inp.focus({preventScroll:true});changed();}};
+  inp.addEventListener('focus',function(){focused=true;activeField=api;root.classList.add('on');draw();scheduleReveal(root);});
+  inp.addEventListener('blur',function(){focused=false;root.classList.remove('on');draw();});
+  function feed(){var s=inp.value;inp.value='';if(!s)return;for(var k=0;k<s.length;k++){var ch=s.charAt(k);if(ch==='\n'&&!ml)continue;M.typeChar(ed,ch);}changed();}
+  inp.addEventListener('input',function(e){if(e.isComposing)return;feed();});inp.addEventListener('compositionend',feed);
+  inp.addEventListener('keydown',function(e){if(e.metaKey||e.ctrlKey||e.altKey)return;var k=e.key,done=true;if(k==='Backspace')M.backspace(ed);else if(k==='ArrowLeft')M.left(ed);else if(k==='ArrowRight')M.right(ed);else if(k==='ArrowUp')M.up(ed);else if(k==='ArrowDown')M.down(ed);else if(k==='Enter'){if(ml)M.typeChar(ed,'\n');else inp.blur();}else if(k==='Escape')inp.blur();else done=false;if(done){e.preventDefault();changed();}});
+  inp.addEventListener('beforeinput',function(e){if(e.inputType==='deleteContentBackward'&&!inp.value){e.preventDefault();M.backspace(ed);changed();}});
+  root.addEventListener('click',function(ev){var els=document.elementsFromPoint(ev.clientX,ev.clientY),target=view;for(var k=0;k<els.length;k++){if(view.contains(els[k])){target=els[k];break;}}var pos=locate(view,target,ev);if(pos){ed.seq=pos.seq;ed.i=pos.i;}if(document.activeElement!==inp)inp.focus({preventScroll:true});changed();scheduleReveal(root);});
+  draw();FIELDS[id]=api;
+}
+function calcHTML(t){return '<section class="task" aria-labelledby="q-c'+t.id+'"><div class="tl">'+t.id+')</div><div class="tb"><p class="q" id="q-c'+t.id+'">'+t.q+'</p><div class="way"><span class="lbl">Rechenweg</span>'+mfHTML('calc-'+t.id+'-way',true,'Rechenweg mit Einheiten notieren','Rechenweg '+t.id)+'</div><div class="res"><span class="sym">'+t.sym+' =</span>'+mfHTML('calc-'+t.id+'-res',false,'Ergebnis','Ergebnis '+t.sym+' in '+t.unit)+'<span class="unit">'+t.unit+'</span></div>'+(t.cmp?'<div class="res cmp"><span class="sym wide">Vergleich mit der Erde: '+t.cmp+'</span>'+mfHTML('calc-'+t.id+'-cmp',false,'Ergebnis','Vergleich mit der Erde')+'</div>':'')+'</div></section>';}
+function textHTML(t){return '<section class="task answer" aria-labelledby="q-t'+t.id+'"><div class="tl">'+t.id+')</div><div class="tb"><p class="q" id="q-t'+t.id+'">'+t.q+'</p><textarea id="text-'+t.id+'" lang="de" placeholder="Antwort in ganzen Sätzen"></textarea></div></section>';}
+var main=$('main');
+main.innerHTML=TOOLBAR+'<section class="panel intro"><h2>Arbeitsauftrag</h2><p>'+AUFTRAG+'</p><p>'+TIPP+'</p></section><h2 class="sec">1. Vorbetrachtungen und Berechnungen</h2>'+CALC.map(calcHTML).join('')+'<h2 class="sec">2. Auswertung</h2><p class="note">'+AUSW+'</p>'+TEXTS.map(textHTML).join('')+'<div class="foot"><p class="src"><strong>Quellen zu den Messwerten</strong><br>'+QUELLEN+'</p><button class="btn primary" id="pdfBtn" type="button">Als PDF speichern</button></div>';
+CALC.forEach(function(t){initMath('calc-'+t.id+'-way',true);initMath('calc-'+t.id+'-res',false);if(t.cmp)initMath('calc-'+t.id+'-cmp',false);});
+function plain(id){var el=$(id);FIELDS[id]={kind:'plain',get:function(){return el.value;},set:function(v){el.value=v;},empty:function(){return el.value.trim()==='';},reset:function(){el.value='';}};}
+plain('name');TEXTS.forEach(function(t){plain('text-'+t.id);});
+function val(id){return FIELDS[id].get().trim();}
+function load(){try{var s=JSON.parse(localStorage.getItem(KEY)||'{}');Object.keys(FIELDS).forEach(function(id){if(typeof s[id]==='string')FIELDS[id].set(s[id]);});}catch(e){}}
+var timer=null;
+function save(){clearTimeout(timer);timer=setTimeout(function(){try{var o={};Object.keys(FIELDS).forEach(function(id){o[id]=FIELDS[id].get();});localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}},300);}
+function grow(el){el.style.height='auto';el.style.height=Math.max(150,el.scrollHeight+2)+'px';}
+function progress(){var n=REQUIRED.filter(function(id){return !FIELDS[id].empty();}).length;$('progText').textContent=n+' von '+REQUIRED.length+' ausgefüllt';$('progBar').style.width=(n/REQUIRED.length*100)+'%';}
+onChange=function(){progress();save();};
+load();document.querySelectorAll('textarea').forEach(grow);progress();updateKeyboardSpace();
+document.addEventListener('input',function(ev){var t=ev.target;if(t.tagName==='TEXTAREA')grow(t);if(t.classList&&t.classList.contains('mfi'))return;progress();save();});
+/* Toolbar-Tap verändert die Formel, ohne den Fokus zu verlieren. */
+var kp=$('kp');
+function keep(e){if(e.target.closest('.kb'))e.preventDefault();}
+kp.addEventListener('pointerdown',keep);kp.addEventListener('mousedown',keep);
+kp.addEventListener('click',function(e){var b=e.target.closest('.kb');if(!b)return;if(!activeField){toast('Tippe zuerst in ein Eingabefeld.');return;}activeField.act(b.getAttribute('data-a'));});
+var toastT=null;
+function toast(msg){var el=$('toast');el.textContent=msg;el.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){el.classList.remove('on');},3600);}
+var resetBtn=$('resetBtn'),resetT=null;
+resetBtn.addEventListener('click',function(){if(!resetBtn.classList.contains('danger')){resetBtn.classList.add('danger');resetBtn.textContent='Wirklich alles löschen?';resetT=setTimeout(function(){resetBtn.classList.remove('danger');resetBtn.textContent='Alles löschen';},4000);return;}clearTimeout(resetT);Object.keys(FIELDS).forEach(function(id){FIELDS[id].reset();});document.querySelectorAll('textarea').forEach(grow);try{localStorage.removeItem(KEY);}catch(e){}progress();resetBtn.classList.remove('danger');resetBtn.textContent='Alles löschen';toast('Arbeitsblatt geleert.');});
+
+/* PDF-Erstellung ohne Fremdbibliothek */
+var INK='#131C2E',MUTED='#576277',ACCENT='#1D5FD1',LINE='#D2D9E5';
+var F_BODY='"IBM Plex Sans","Helvetica Neue",Arial,sans-serif';
+var F_MONO='"IBM Plex Mono",Menlo,"Courier New",monospace';
+var F_DISP='"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif';
+function nodeBox(nd,size,g){
+  if(nd.t==='c'){g.font='400 '+size+'px '+F_MONO;var w=g.measureText(nd.v).width;return {w:w,asc:size*.78,desc:size*.22,draw:function(c,x,y){c.font='400 '+size+'px '+F_MONO;c.fillText(nd.v,x,y);}};}
+  if(nd.t==='sup'){var s=seqBox(nd.s,size*.7,g),r=size*.42;return {w:s.w+1,asc:s.asc+r,desc:Math.max(0,s.desc-r),draw:function(c,x,y){s.draw(c,x+.5,y-r);}};}
+  var n=seqBox(nd.n,size,g),d=seqBox(nd.d,size,g),w2=Math.max(n.w,d.w,size*.5)+size*.5,ax=size*.3,gp=size*.12,nb=ax+gp+n.desc,db=-ax+gp+d.asc;
+  return {w:w2,asc:nb+n.asc,desc:db+d.desc,draw:function(c,x,y){n.draw(c,x+(w2-n.w)/2,y-nb);d.draw(c,x+(w2-d.w)/2,y+db);c.strokeStyle=INK;c.lineWidth=Math.max(.6,size*.07);c.beginPath();c.moveTo(x+size*.1,y-ax);c.lineTo(x+w2-size*.1,y-ax);c.stroke();}};
+}
+function seqBox(seq,size,g){var items=[],w=0,asc=size*.78,desc=size*.22;seq.forEach(function(nd){if(nd.t==='nl')return;var b=nodeBox(nd,size,g);items.push(b);w+=b.w;asc=Math.max(asc,b.asc);desc=Math.max(desc,b.desc);});if(!items.length)w=size*.4;return {w:w,asc:asc,desc:desc,draw:function(c,x,y){items.forEach(function(b){b.draw(c,x,y);x+=b.w;});}};}
+function mathLines(seq,size,maxW,g){var lines=[],cur={items:[],w:0,asc:size*.78,desc:size*.22};function push(){lines.push(cur);cur={items:[],w:0,asc:size*.78,desc:size*.22};}seq.forEach(function(nd){if(nd.t==='nl'){push();return;}var b=nodeBox(nd,size,g);if(cur.items.length&&cur.w+b.w>maxW)push();cur.items.push(b);cur.w+=b.w;cur.asc=Math.max(cur.asc,b.asc);cur.desc=Math.max(cur.desc,b.desc);});lines.push(cur);return lines;}
+function linesH(lines){var h=0;lines.forEach(function(l){h+=l.asc+l.desc+4;});return h;}
+function drawLines(g,lines,x,y){lines.forEach(function(l){var cx=x,base=y+l.asc;l.items.forEach(function(b){b.draw(g,cx,base);cx+=b.w;});y+=l.asc+l.desc+4;});}
+function breakLong(g,s,maxW){var out=[],cur='';for(var k=0;k<s.length;k++){if(cur&&g.measureText(cur+s.charAt(k)).width>maxW){out.push(cur);cur='';}cur+=s.charAt(k);}out.push(cur);return out;}
+function wrap(g,text,maxW){var out=[];String(text).split('\n').forEach(function(par){var line='';par.split(' ').forEach(function(w){var t=line?line+' '+w:w;if(!line||g.measureText(t).width<=maxW)line=t;else{out.push(line);line=w;}});out.push(line);});var res=[];out.forEach(function(l){if(g.measureText(l).width>maxW)breakLong(g,l,maxW).forEach(function(p){res.push(p);});else res.push(l);});return res;}
+function strBytes(s){var u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u;}
+function dataUrlBytes(url){var b=atob(url.split(',')[1]),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
+function writePdf(canvases,PW,PH){
+  var chunks=[],pos=0,offs=[];function put(x){var u=typeof x==='string'?strBytes(x):x;chunks.push(u);pos+=u.length;}
+  function obj(id,head,stream){offs[id]=pos;put(id+' 0 obj\n'+head);if(stream){put('\nstream\n');put(stream);put('\nendstream');}put('\nendobj\n');}
+  var n=canvases.length;put('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');obj(1,'<< /Type /Catalog /Pages 2 0 R >>');var kids=[];for(var i=0;i<n;i++)kids.push((3+3*i)+' 0 R');obj(2,'<< /Type /Pages /Kids ['+kids.join(' ')+'] /Count '+n+' >>');
+  for(var p=0;p<n;p++){var c=canvases[p],jpg=dataUrlBytes(c.toDataURL('image/jpeg',0.92)),content='q '+PW+' 0 0 '+PH+' 0 0 cm /Im0 Do Q';obj(3+3*p,'<< /Type /Page /Parent 2 0 R /MediaBox [0 0 '+PW+' '+PH+'] /Resources << /XObject << /Im0 '+(5+3*p)+' 0 R >> >> /Contents '+(4+3*p)+' 0 R >>');obj(4+3*p,'<< /Length '+content.length+' >>',strBytes(content));obj(5+3*p,'<< /Type /XObject /Subtype /Image /Width '+c.width+' /Height '+c.height+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+jpg.length+' >>',jpg);}
+  var total=3+3*n,xref=pos,x='xref\n0 '+total+'\n0000000000 65535 f \n';for(var k=1;k<total;k++)x+=('0000000000'+offs[k]).slice(-10)+' 00000 n \n';put(x+'trailer\n<< /Size '+total+' /Root 1 0 R >>\nstartxref\n'+xref+'\n%%EOF');return new Blob(chunks,{type:'application/pdf'});
+}
+async function makePdf(){
+  try{if(document.fonts&&document.fonts.load){await Promise.race([Promise.all(['400 12px "IBM Plex Sans"','500 12px "IBM Plex Sans"','600 12px "IBM Plex Sans"','400 12px "IBM Plex Mono"','700 20px "Bricolage Grotesque"'].map(function(f){return document.fonts.load(f);})),new Promise(function(r){setTimeout(r,2500);})]);}}catch(e){}
+  var PW=595.28,PH=841.89,MX=40,MT=44,MB=50,CW=PW-2*MX,K=1654/PW,pages=[],g=null,y=0;
+  function newPage(){var c=document.createElement('canvas');c.width=Math.round(PW*K);c.height=Math.round(PH*K);var ctx=c.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.scale(K,K);ctx.textBaseline='alphabetic';pages.push({c:c,g:ctx});g=ctx;y=MT;}
+  function need(h){if(y+h>PH-MB)newPage();}
+  function label(s){need(16);g.fillStyle=MUTED;g.font='600 8.5px '+F_BODY;g.fillText(s.toUpperCase(),MX,y+8);y+=15;}
+  function para(s,font,color,lh,x,w){g.font=font;g.fillStyle=color;wrap(g,s,w).forEach(function(l){need(lh);g.font=font;g.fillStyle=color;g.fillText(l,x,y+lh-4);y+=lh;});}
+  function rule(c,h){g.fillStyle=c;g.fillRect(MX,y,CW,h);}
+  newPage();g.fillStyle=INK;g.font='700 28px '+F_DISP;g.fillText('Weiße Zwerge',MX,y+24);y+=36;g.fillStyle=MUTED;g.font='400 12px '+F_BODY;g.fillText('Arbeitsblatt · Sirius B: Masse, Größe und Dichte',MX,y+8);y+=24;g.fillStyle=INK;g.font='600 12px '+F_BODY;g.fillText('Name:',MX,y+10);g.font='400 12px '+F_BODY;g.fillText(val('name'),MX+40,y+9);g.fillStyle=LINE;g.fillRect(MX+38,y+13,230,.8);g.fillStyle=INK;g.font='600 12px '+F_BODY;g.fillText('Datum:',MX+300,y+10);g.font='400 12px '+F_BODY;g.fillText(new Date().toLocaleDateString('de-DE'),MX+344,y+9);y+=28;rule(INK,1.5);y+=14;
+  label('Arbeitsauftrag');para(AUFTRAG,'400 12px '+F_BODY,INK,17,MX,CW);y+=10;
+  function C(s){return s.split('').map(function(ch){return {t:'c',v:ch};});}function FR(n,d){return {t:'fr',n:C(n),d:C(d)};}
+  var forms=[C('V=').concat([FR('4','3')],C('πR'),[{t:'sup',s:C('3')}]),C('ρ=').concat([FR('M','V')]),C('g=').concat([{t:'fr',n:C('GM'),d:C('R').concat([{t:'sup',s:C('2')}])}])];var fbox=forms.map(function(s){return seqBox(s,15,g);});var fh=0;fbox.forEach(function(b){fh=Math.max(fh,b.asc+b.desc);});need(fh+40);label('Benötigte Formeln');g.fillStyle=INK;var fx=MX;fbox.forEach(function(b){g.fillStyle=INK;b.draw(g,fx,y+fbox.reduce(function(m,q){return Math.max(m,q.asc);},0));fx+=b.w+44;});y+=fh+16;
+  var rows=[['Masse von Sirius B','M','1,018 Sonnenmassen (M☉)'],['Radius von Sirius B','R','0,008098 Sonnenradien (R☉)'],['Sonnenmasse','M☉','1,9885 × 10³⁰ kg'],['Sonnenradius','R☉','6,957 × 10⁸ m'],['Erdradius','R⊕','6,371 × 10⁶ m'],['Mittlere Erddichte','ρ⊕','5,51 × 10³ kg/m³'],['Erdbeschleunigung','g⊕','9,81 m/s²'],['Gravitationskonstante','G','6,674 × 10⁻¹¹ m³ kg⁻¹ s⁻²']];need(20*(rows.length+1)+30);label('Beobachtungsdaten und Vergleichswerte');var c1=MX,c2=MX+190,c3=MX+250;g.fillStyle=MUTED;g.font='600 8.5px '+F_BODY;g.fillText('GRÖSSE',c1,y+9);g.fillText('SYMBOL/FORMELZEICHEN',c2,y+9);g.fillText('WERT',c3+60,y+9);y+=14;rule(INK,1);y+=1;rows.forEach(function(r){g.fillStyle=INK;g.font='400 11px '+F_BODY;g.fillText(r[0],c1,y+14);g.font='400 10.5px '+F_MONO;g.fillText(r[1],c2,y+14);g.fillText(r[2],c3+60,y+14);y+=20;rule(LINE,.8);});y+=20;
+  function section(title,note,firstH){var noteL=[];if(note){g.font='400 12px '+F_BODY;noteL=wrap(g,note,CW);}need(34+noteL.length*17+Math.min(firstH,200));g.fillStyle=ACCENT;g.font='700 17px '+F_DISP;g.fillText(title,MX,y+16);y+=28;if(noteL.length)para(note,'400 12px '+F_BODY,MUTED,17,MX,CW);y+=4;}
+  function resRow(id,sym,unit,labelText,minW){var X=MX+26,seq=FIELDS[id].seq(),box=seqBox(seq,13,g),fw=Math.max(minW,box.w+14),rowH=box.asc+box.desc+10,base=y+box.asc+3,x0;g.fillStyle=INK;if(labelText){g.font='400 11.5px '+F_BODY;g.fillText(labelText,X,base);x0=X+g.measureText(labelText).width+8;}else{g.font='500 13px '+F_MONO;g.fillText(sym+' =',X,base);x0=X+44;}g.fillStyle=INK;box.draw(g,x0+6,base);g.fillStyle=INK;g.fillRect(x0,y+rowH-4,fw,.9);if(unit){g.font='400 12px '+F_MONO;g.fillStyle=INK;g.fillText(unit,x0+fw+8,base);}y+=rowH+4;}
+  function resH(id){var b=seqBox(FIELDS[id].seq(),13,g);return b.asc+b.desc+14;}
+  function calcTask(t){var X=MX+26,W=CW-26;g.font='600 12.5px '+F_BODY;var ql=wrap(g,t.q,W);var wayL=mathLines(FIELDS['calc-'+t.id+'-way'].seq(),12.5,W-20,g);var wayH=Math.max(44,linesH(wayL)+14);var rid='calc-'+t.id+'-res',cid='calc-'+t.id+'-cmp';var total=ql.length*16+8+12+wayH+10+resH(rid)+(t.cmp?8+resH(cid):0)+16;return {total:total,draw:function(){need(total);g.fillStyle=ACCENT;g.font='700 14px '+F_DISP;g.fillText(t.id+')',MX,y+13);g.fillStyle=INK;g.font='600 12.5px '+F_BODY;ql.forEach(function(l,i){g.fillText(l,X,y+13+i*16);});y+=ql.length*16+8;g.fillStyle=MUTED;g.font='600 8.5px '+F_BODY;g.fillText('RECHENWEG',X,y+8);y+=12;g.strokeStyle=LINE;g.lineWidth=1;g.strokeRect(X,y,W,wayH);g.fillStyle=INK;drawLines(g,wayL,X+10,y+7);y+=wayH+10;resRow(rid,t.sym,t.unit,null,170);if(t.cmp){y+=4;resRow(cid,null,null,'Vergleich mit der Erde: '+t.cmp,150);}y+=12;}};}
+  function textTask(t){var X=MX+26,W=CW-26;g.font='600 12.5px '+F_BODY;var ql=wrap(g,t.q,W);g.font='400 12px '+F_BODY;var al=wrap(g,FIELDS['text-'+t.id].get(),W-4);var n=Math.max(5,al.length);return {total:ql.length*16+8+66,draw:function(){need(ql.length*16+8+66);g.fillStyle=ACCENT;g.font='700 14px '+F_DISP;g.fillText(t.id+')',MX,y+13);g.fillStyle=INK;g.font='600 12.5px '+F_BODY;ql.forEach(function(l,i){g.fillText(l,X,y+13+i*16);});y+=ql.length*16+6;for(var i=0;i<n;i++){need(22);if(al[i]){g.fillStyle=INK;g.font='400 12px '+F_BODY;g.fillText(al[i],X+2,y+16);}g.fillStyle=LINE;g.fillRect(X,y+20,W,.8);y+=22;}y+=14;}};}
+  var calcs=CALC.map(calcTask);section('1. Vorbetrachtungen und Berechnungen',null,calcs[0].total);calcs.forEach(function(c){c.draw();});var texts=TEXTS.map(textTask);section('2. Auswertung',AUSW,texts[0].total);texts.forEach(function(t){t.draw();});need(50);label('Quellen zu den Messwerten');para(QUELLEN,'400 9.5px '+F_BODY,MUTED,13,MX,CW);var total=pages.length;pages.forEach(function(p,i){p.g.fillStyle=MUTED;p.g.font='400 9px '+F_BODY;p.g.fillText('Weiße Zwerge · Arbeitsblatt Sirius B · Seite '+(i+1)+' von '+total,MX,PH-24);});return writePdf(pages.map(function(p){return p.c;}),PW.toFixed(2),PH.toFixed(2));
+}
+var downloads=null,pdfBtn=$('pdfBtn'),busy=false;
+var dlReady=(window.claude&&window.claude.use)?window.claude.use('downloads').then(function(d){downloads=d;}).catch(function(){downloads=null;}):Promise.resolve();
+function browserSave(blob,fname){var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=fname;a.rel='noopener';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(url);},60000);}
+pdfBtn.addEventListener('click',async function(){if(busy)return;busy=true;var old=pdfBtn.textContent;pdfBtn.disabled=true;pdfBtn.textContent='PDF wird erstellt …';try{await dlReady;var blob=await makePdf();var nm=val('name').replace(/[^\wäöüÄÖÜß-]+/g,'-').replace(/^-+|-+$/g,'');var fname='Weisse-Zwerge-Arbeitsblatt'+(nm?'-'+nm:'')+'.pdf';if(downloads)await downloads.save({filename:fname,data:blob});else browserSave(blob,fname);toast('PDF gespeichert.');}catch(e){var code=e&&e.code;if(code==='declined')toast('Speichern abgebrochen.');else if(code==='rate_limited')toast('Bitte einen Moment warten und noch einmal tippen.');else toast('Das PDF konnte nicht gespeichert werden'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'.');}finally{busy=false;pdfBtn.disabled=false;pdfBtn.textContent=old;}});
+})();
+</script>
+</body>
+</html>
